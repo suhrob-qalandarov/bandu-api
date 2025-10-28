@@ -3,6 +3,7 @@ package org.exp.banduapp.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.exp.banduapp.config.security.JwtService;
+import org.exp.banduapp.models.dto.request.LoginReq;
 import org.exp.banduapp.models.dto.request.RegisterReq;
 import org.exp.banduapp.models.dto.response.LoginRes;
 import org.exp.banduapp.models.dto.response.UserRes;
@@ -40,6 +41,24 @@ public class AuthServiceImpl implements AuthService {
 
         boolean affected = userService.toggleUserVisibility(user.getId());
         if (affected) log.info("User activated userId={}", user.getId());
+
+        String token = jwtService.generateToken(user);
+        UserRes userRes = userService.convertToUserResponse(user);
+
+        return LoginRes.builder()
+                .token(token)
+                .userRes(userRes)
+                .build();
+    }
+
+    @Override
+    public LoginRes loginClient(LoginReq loginReq) {
+        Optional<User> optionalUser = userService.checkPasswordAndGetUser(loginReq.phoneNumber(), loginReq.password());
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("Invalid password");
+        }
+        User user = optionalUser.get();
 
         String token = jwtService.generateToken(user);
         UserRes userRes = userService.convertToUserResponse(user);

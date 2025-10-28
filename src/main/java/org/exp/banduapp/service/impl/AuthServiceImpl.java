@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public LoginRes verifyClient(String phoneNumber, String otpCode) {
         String cleanOtp = otpCode.trim();
-        Optional<User> optionalUser = userService.checkAndGetUser(phoneNumber, cleanOtp);
+        Optional<User> optionalUser = userService.checkOtpAndGetUser(phoneNumber, cleanOtp);
 
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("Invalid OTP");

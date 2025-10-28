@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> checkAndGetUser(String phoneNumber, String otpCode) {
+    public Optional<User> checkOtpAndGetUser(String phoneNumber, String otpCode) {
         String fullPhone = getCorrectNumber(phoneNumber);
         return userRepository.findByPhoneNumberAndOtpCode(fullPhone, otpCode);
     }

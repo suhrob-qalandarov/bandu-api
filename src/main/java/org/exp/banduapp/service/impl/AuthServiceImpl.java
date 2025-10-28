@@ -3,7 +3,6 @@ package org.exp.banduapp.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.exp.banduapp.config.security.JwtService;
-import org.exp.banduapp.models.dto.request.LoginReq;
 import org.exp.banduapp.models.dto.request.RegisterReq;
 import org.exp.banduapp.models.dto.response.LoginRes;
 import org.exp.banduapp.models.dto.response.UserRes;
@@ -52,8 +51,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginRes loginClient(LoginReq loginReq) {
-        User user = userService.checkPasswordAndGetUser(loginReq.phoneNumber(), loginReq.password());
+    public LoginRes loginClient(String phoneNumber, String password) {
+        User user = userService.checkPasswordAndGetUser(phoneNumber, password);
         String token = jwtService.generateToken(user);
         UserRes userRes = userService.convertToUserResponse(user);
 

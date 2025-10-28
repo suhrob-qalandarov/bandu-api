@@ -41,7 +41,7 @@ public class FilterChainConfig {
                                 HttpMethod.POST,
                                 API + V1 + AUTH + REGISTER,
                                 API + V1 + AUTH + VERIFY + WAY_ALL,
-                                API + V1 + AUTH + LOGIN
+                                API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
                         .anyRequest().authenticated()
         );

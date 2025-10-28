@@ -19,9 +19,16 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
 
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
     private String phoneNumber;
+
+    @Column(nullable = false)
     private String password;
 
     @Builder.Default
@@ -29,6 +36,7 @@ public class User extends BaseEntity implements UserDetails {
     private boolean visibility = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Column(nullable = false)
     private Set<Role> roles;
 
     @Override

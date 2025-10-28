@@ -23,13 +23,13 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
 
     @Override
-    public String saveDataAndSendVerifyCode(RegisterReq registerReq) {
+    public String registerClientAndSendVerifyCode(RegisterReq registerReq) {
         return userService.saveNewUser(registerReq);
     }
 
     @Override
     @Transactional
-    public LoginRes verifyAndSendUserData(String phoneNumber, String otpCode) {
+    public LoginRes verifyClient(String phoneNumber, String otpCode) {
         String cleanOtp = otpCode.trim();
         Optional<User> optionalUser = userService.checkAndGetUser(phoneNumber, cleanOtp);
 

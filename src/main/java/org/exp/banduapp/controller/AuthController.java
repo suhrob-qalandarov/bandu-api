@@ -30,7 +30,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerClient(@RequestBody RegisterReq registerReq) {
-        String otpCode = authService.saveDataAndSendVerifyCode(registerReq);
+        String otpCode = authService.registerClientAndSendVerifyCode(registerReq);
         return ResponseEntity.ok(otpCode);
     }
 
@@ -39,7 +39,7 @@ public class AuthController {
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam("otpCode") @Size(min = 6, max = 6) String otpCode
     ) {
-        LoginRes loginRes = authService.verifyAndSendUserData(phoneNumber, otpCode);
+        LoginRes loginRes = authService.verifyClient(phoneNumber, otpCode);
         return ResponseEntity.ok(loginRes);
     }
 }

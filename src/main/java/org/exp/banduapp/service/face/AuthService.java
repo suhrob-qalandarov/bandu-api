@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AuthService {
 
-    String saveDataAndSendVerifyCode(RegisterReq registerReq);
+    String registerClientAndSendVerifyCode(RegisterReq registerReq);
 
-    LoginRes verifyAndSendUserData(String phoneNumber, String otpCode);
+    LoginRes verifyClient(String phoneNumber, String otpCode);
 }

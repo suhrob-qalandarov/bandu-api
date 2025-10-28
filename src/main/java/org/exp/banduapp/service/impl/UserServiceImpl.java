@@ -55,6 +55,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> checkPasswordAndGetUser(String phoneNumber, String password) {
+        String fullPhone = getCorrectNumber(phoneNumber);
+        Optional<User> optionalUser = userRepository.findByPhoneNumber(fullPhone);
+
+        return optionalUser.filter(user ->
+                passwordEncoder.matches(password, user.getPassword())
+        );
+    }
+
+    @Override
     @Transactional
     public boolean toggleUserVisibility(Long userId) {
         int updated = userRepository.toggleVisibilityById(userId);

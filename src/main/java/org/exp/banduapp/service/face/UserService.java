@@ -17,4 +17,6 @@ public interface UserService {
     Optional<User> checkOtpAndGetUser(String phoneNumber, String code);
 
     boolean toggleUserVisibility(Long id);
+
+    Optional<User> checkPasswordAndGetUser(String phoneNumber, String password);
 }

@@ -2,6 +2,7 @@ package org.exp.banduapp.controller;
 
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import org.exp.banduapp.models.dto.request.LoginReq;
 import org.exp.banduapp.models.dto.request.RegisterReq;
 import org.exp.banduapp.models.dto.response.LoginRes;
 import org.exp.banduapp.models.dto.response.UserRes;
@@ -26,6 +27,12 @@ public class AuthController {
     public ResponseEntity<UserRes> getClientData(@AuthenticationPrincipal User user) {
         UserRes userRes = userService.convertToUserResponse(user);
         return ResponseEntity.ok(userRes);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginRes> loginUser(@RequestBody LoginReq loginReq) {
+        LoginRes loginRes = authService.loginClient(loginReq);
+        return ResponseEntity.ok(loginRes);
     }
 
     @PostMapping("/register")

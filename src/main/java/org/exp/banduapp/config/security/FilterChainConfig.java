@@ -40,7 +40,8 @@ public class FilterChainConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 API + V1 + AUTH + REGISTER,
-                                API + V1 + AUTH + VERIFY + WAY_ALL
+                                API + V1 + AUTH + VERIFY + WAY_ALL,
+                                API + V1 + AUTH + LOGIN
                         ).permitAll()
                         .anyRequest().authenticated()
         );

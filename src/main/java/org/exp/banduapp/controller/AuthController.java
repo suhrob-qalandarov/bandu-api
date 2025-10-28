@@ -23,8 +23,8 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserRes> getUserData(@AuthenticationPrincipal User user) {
-        UserRes userRes = userService.getUserDataFromToken(user);
+    public ResponseEntity<UserRes> getClientData(@AuthenticationPrincipal User user) {
+        UserRes userRes = userService.getClientDataFromToken(user);
         return ResponseEntity.ok(userRes);
     }
 

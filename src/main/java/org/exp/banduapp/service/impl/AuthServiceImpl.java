@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
         if (affected) log.info("User activated userId={}", user.getId());
 
         String token = jwtService.generateToken(user);
-        UserRes userRes = userService.getUserDataFromToken(user);
+        UserRes userRes = userService.getClientDataFromToken(user);
 
         return LoginRes.builder()
                 .token(token)

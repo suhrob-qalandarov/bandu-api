@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserRes getUserDataFromToken(User user) {
+    public UserRes getClientDataFromToken(User user) {
         return convertToResponse(user);
     }
 

@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    UserRes getUserDataFromToken(User user);
+    UserRes getClientDataFromToken(User user);
 
     String saveNewUser(RegisterReq registerReq);
 

@@ -32,10 +32,9 @@
     <dependencies>
         <!--Spring Web-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <!--JPA-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

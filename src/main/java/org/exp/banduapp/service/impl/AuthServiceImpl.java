@@ -53,13 +53,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginRes loginClient(LoginReq loginReq) {
-        Optional<User> optionalUser = userService.checkPasswordAndGetUser(loginReq.phoneNumber(), loginReq.password());
-
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("Invalid password");
-        }
-        User user = optionalUser.get();
-
+        User user = userService.checkPasswordAndGetUser(loginReq.phoneNumber(), loginReq.password());
         String token = jwtService.generateToken(user);
         UserRes userRes = userService.convertToUserResponse(user);
 

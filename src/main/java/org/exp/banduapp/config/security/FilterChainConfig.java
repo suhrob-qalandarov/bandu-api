@@ -36,6 +36,13 @@ public class FilterChainConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.authorizeHttpRequests(auth ->
                 auth
+                        // Public swagger endpoints
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
                         // Public auth endpoint
                         .requestMatchers(
                                 HttpMethod.POST,

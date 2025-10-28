@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

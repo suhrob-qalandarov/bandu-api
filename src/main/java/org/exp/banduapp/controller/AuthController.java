@@ -24,7 +24,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserRes> getClientData(@AuthenticationPrincipal User user) {
-        UserRes userRes = userService.getClientDataFromToken(user);
+        UserRes userRes = userService.convertToUserResponse(user);
         return ResponseEntity.ok(userRes);
     }
 

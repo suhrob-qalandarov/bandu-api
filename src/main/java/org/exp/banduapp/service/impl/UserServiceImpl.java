@@ -32,11 +32,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserRes getClientDataFromToken(User user) {
-        return convertToResponse(user);
-    }
-
-    @Override
     public String saveNewUser(RegisterReq registerReq) {
 
         boolean existsUserByPhoneNumber = userRepository.existsUserByPhoneNumber(registerReq.phoneNumber());
@@ -90,7 +85,8 @@ public class UserServiceImpl implements UserService {
         return phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber;
     }
 
-    private UserRes convertToResponse(User user) {
+    @Override
+    public UserRes convertToUserResponse(User user) {
         Set<String> roleNames = user.getRoles().stream()
                 .map(role -> role.getName().name())
                 .collect(Collectors.toSet());

@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -31,13 +32,21 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(length = 6)
+    private String otpCode;
+
     @Builder.Default
     @Column(nullable = false)
-    private boolean visibility = true;
+    private boolean visibility = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Column(nullable = false)
-    private Set<Role> roles;
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -29,13 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> getUserData(@RequestBody RegisterReq registerReq) {
+    public ResponseEntity<String> registerClient(@RequestBody RegisterReq registerReq) {
         String otpCode = authService.saveDataAndSendVerifyCode(registerReq);
         return ResponseEntity.ok(otpCode);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<LoginRes> getUserData(
+    public ResponseEntity<LoginRes> verifyClient(
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam("otpCode") @Size(min = 6, max = 6) String otpCode
     ) {

@@ -40,6 +40,12 @@ public class JwtService {
     }
 
     private SecretKey getSecretKey() {
+        if (secretKey == null || secretKey.getBytes(StandardCharsets.UTF_8).length < 32) {
+            log.warn("JWT secret key is too weak or missing. Using auto-generated secure key.");
+            SecretKey randomBuiltKey = Jwts.SIG.HS256.key().build();// Random 256-bit key
+            log.info("Default key={}", randomBuiltKey);
+            return randomBuiltKey;
+        }
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 

@@ -15,7 +15,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getOrCreateRoleByName(RoleName roleName) {
-        return roleRepository.findByName(RoleName.ROLE_USER)
+        return roleRepository.findByName(roleName)
                 .orElse(createNewRole(roleName));
     }
 

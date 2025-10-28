@@ -20,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import static org.exp.banduapp.util.Constants.TOKEN_PREFIX;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -57,7 +59,7 @@ public class JwtService {
                 .map(role -> role.getName().name())
                 .collect(Collectors.joining(","));
 
-        return Jwts.builder()
+        return TOKEN_PREFIX + Jwts.builder()
                 .subject(user.getPhoneNumber())
                 .claim("userId", user.getId())
                 .claim("firstName", user.getFirstName())

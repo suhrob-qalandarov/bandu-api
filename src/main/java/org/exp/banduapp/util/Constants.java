@@ -14,8 +14,12 @@ public interface Constants {
     String LOGIN = "/login";
     String REGISTER = "/register";
     String VERIFY = "/verify";
-    String LOGOUT = "/logout";
-    String REFRESH = "/refresh";
+
+    String PLACE ="/place";
+    String PLACES ="/places";
+
+    String BOOKING = "/booking";
+    String BOOKINGS = "/bookings";
 
     String ADMIN = "/admin";
     String USER = "/user";

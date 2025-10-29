@@ -68,7 +68,7 @@ src/main/java/org/exp/banduapp/
 
 ## 🔧 Setup & Installation
 
-### Prerequisites
+### Requirements
 - Java 21 or higher
 - Maven 3.8+
 - PostgreSQL database
@@ -106,11 +106,12 @@ server.port=8080
 ```
 
 3. Run the application:
-Using Maven:
+
+- Using Maven:
 ```
 ./mvnw spring-boot:run
 ```
-Or build and run:
+- Or build and run:
 ```
 ./mvnw clean package
 java -jar target/bandu-app-0.0.1-SNAPSHOT.jar

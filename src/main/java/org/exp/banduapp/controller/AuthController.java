@@ -1,5 +1,11 @@
 package org.exp.banduapp.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -22,17 +28,26 @@ import static org.exp.banduapp.util.Constants.*;
 @RequestMapping((API + V1 + AUTH))
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "Autentifikatsiya", description = "Kirish, ro'yxatdan o'tish, tasdiqlash")
 public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
 
+    @Operation(summary = "Joriy foydalanuvchi", description = "Token orqali foydalanuvchi ma'lumotlari")
+    @ApiResponse(responseCode = "200", description = "Foydalanuvchi ma'lumotlari")
     @GetMapping("/me")
     public ResponseEntity<UserRes> getClientData(@AuthenticationPrincipal User user) {
         UserRes userRes = userService.convertToUserResponse(user);
         return ResponseEntity.ok(userRes);
     }
 
+    @Operation(summary = "Kirish", description = "Telefon va parol orqali login")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Muvaffaqiyatli kirish",
+                    content = @Content(schema = @Schema(implementation = LoginRes.class))),
+            @ApiResponse(responseCode = "400", description = "Noto'g'ri telefon yoki parol")
+    })
     @PostMapping("/login")
     public ResponseEntity<LoginRes> loginUser(
             @NotBlank(message = "Telefon raqami bo'sh bo'lmasligi kerak")
@@ -50,12 +65,16 @@ public class AuthController {
         return ResponseEntity.ok(loginRes);
     }
 
+    @Operation(summary = "Ro'yxatdan o'tish", description = "Yangi foydalanuvchi yaratish → OTP yuboriladi")
+    @ApiResponse(responseCode = "200", description = "OTP kodi qaytariladi (masalan: 123456)")
     @PostMapping("/register")
     public ResponseEntity<String> registerClient(@Valid @RequestBody RegisterReq registerReq) {
         String otpCode = authService.registerClientAndSendVerifyCode(registerReq);
         return ResponseEntity.ok(otpCode);
     }
 
+    @Operation(summary = "SMS kod bilan tasdiqlash", description = "OTP orqali hisobni faollashtirish")
+    @ApiResponse(responseCode = "200", description = "Hisob faollashtirildi + JWT token")
     @PostMapping("/verify")
     public ResponseEntity<LoginRes> verifyClient(
             @NotBlank(message = "Telefon raqami bo'sh bo'lmasligi kerak")

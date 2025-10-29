@@ -40,7 +40,7 @@ RESTful API for place booking management system built with Spring Boot.
 
 ## 🏗️ Project Structure
 ```
-
+``` markdown
 src/main/java/org/exp/banduapp/ 
 ├── config/ # Configuration classes 
 │ 
@@ -64,6 +64,7 @@ src/main/java/org/exp/banduapp/
 │ ├── face/ # Service interfaces 
 │ └── impl/ # Service implementations 
 └── util/ # Utility classes``` 
+``` 
 
 ## 🔧 Setup & Installation
 

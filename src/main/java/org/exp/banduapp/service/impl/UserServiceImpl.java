@@ -61,6 +61,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByPhoneNumber(fullPhone)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (!user.isVisibility()) {
+            throw new RuntimeException("User inactive");
+        }
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }

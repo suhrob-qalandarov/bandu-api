@@ -11,4 +11,6 @@ public interface AdminPlaceService {
     PlaceRes addNewPlace(PlaceReq placeReq);
 
     PlaceRes updatePlaceStatus(Long placeId, PlaceStatus status);
+
+    void hidePlaceWithVisibility(Long placeId);
 }

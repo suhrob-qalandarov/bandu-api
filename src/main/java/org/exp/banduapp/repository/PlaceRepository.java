@@ -28,4 +28,12 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             @Param("placeId") Long placeId,
             @Param("status") String status
     );
+
+    @Modifying
+    @Query(value = """
+    UPDATE places
+    SET visibility = false
+    WHERE id = :placeId
+    """, nativeQuery = true)
+    int hidePlaceById(@Param("placeId") Long placeId);
 }

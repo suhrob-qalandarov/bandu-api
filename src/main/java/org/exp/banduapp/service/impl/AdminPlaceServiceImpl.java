@@ -10,6 +10,7 @@ import org.exp.banduapp.repository.PlaceRepository;
 import org.exp.banduapp.service.face.AdminPlaceService;
 import org.exp.banduapp.service.face.PlaceService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,5 +49,15 @@ public class AdminPlaceServiceImpl implements AdminPlaceService {
 
         Place statusUpdatedPlace = result.getFirst();
         return placeService.convertToPlaceRes(statusUpdatedPlace);
+    }
+
+    @Override
+    @Transactional
+    public void hidePlaceWithVisibility(Long placeId) {
+        int updated = placeRepository.hidePlaceById(placeId);
+
+        if (updated == 0) {
+            throw new EntityNotFoundException("Place not found with id: " + placeId);
+        }
     }
 }

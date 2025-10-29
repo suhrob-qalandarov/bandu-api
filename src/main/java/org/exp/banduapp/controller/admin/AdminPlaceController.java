@@ -26,14 +26,14 @@ public class AdminPlaceController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PlaceRes>> getPlaces() {
         List<PlaceRes> placeResList = adminPlaceService.getPlaceResList();
-        return new ResponseEntity<>(placeResList, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(placeResList, HttpStatus.OK);
     }
 
     @GetMapping("/{placeId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlaceRes> getPlace(@PathVariable Long placeId) {
         PlaceRes placeRes = adminPlaceService.getPlaceRes(placeId);
-        return new ResponseEntity<>(placeRes, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(placeRes, HttpStatus.OK);
     }
 
     @PostMapping

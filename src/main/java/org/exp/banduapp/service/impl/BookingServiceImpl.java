@@ -111,7 +111,8 @@ public class BookingServiceImpl implements BookingService {
         return convertToBookingRes(cancelledBooking);
     }
 
-    private BookingRes convertToBookingRes(Booking booking) {
+    @Override
+    public BookingRes convertToBookingRes(Booking booking) {
         return BookingRes.builder()
                 .id(booking.getId())
                 .placeName(booking.getPlace().getName())

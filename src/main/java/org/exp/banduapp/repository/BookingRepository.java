@@ -58,4 +58,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("bookingId") Long bookingId,
             @Param("userId") Long userId
     );
+
+    @Modifying
+    @Query(value = """
+    UPDATE bookings
+    SET status = 'CONFIRMED'
+    WHERE id = :bookingId
+      AND visibility = true
+      AND status IN ('PENDING')
+    RETURNING *
+    """, nativeQuery = true)
+    List<Booking> confirmAndReturnBooking(@Param("bookingId") Long bookingId);
 }

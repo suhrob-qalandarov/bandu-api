@@ -106,11 +106,10 @@ server.port=8080
 ```
 
 3. Run the application
-Using Maven:``` bash
+Using Maven:
 ./mvnw spring-boot:run
 ```
-
-Or build and run:``` bash
+Or build and run:
 ./mvnw clean package
 java -jar target/bandu-app-0.0.1-SNAPSHOT.jar
 ```

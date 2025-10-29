@@ -1,6 +1,7 @@
 package org.exp.banduapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.exp.banduapp.models.dto.request.BookingReq;
 import org.exp.banduapp.models.dto.response.BookingRes;
 import org.exp.banduapp.models.entities.User;
 import org.exp.banduapp.service.face.BookingService;
@@ -24,5 +25,11 @@ public class BookingController {
     public ResponseEntity<List<BookingRes>> getClientBookings(@AuthenticationPrincipal User user) {
         List<BookingRes> bookingResList = bookingService.getUserBookingsRes(user);
         return new ResponseEntity<>(bookingResList, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<BookingRes> clientBookingPlace(@RequestBody BookingReq bookingReq, @AuthenticationPrincipal User user) {
+        BookingRes bookingRes = bookingService.newBooking(bookingReq, user);
+        return new ResponseEntity<>(bookingRes, HttpStatus.OK);
     }
 }

@@ -70,7 +70,7 @@ src/main/java/org/exp/banduapp/
 ### Prerequisites
 - Java 21 or higher
 - Maven 3.8+
-- PostgreSQL/MySQL database
+- PostgreSQL database
 - (Optional) Docker
 
 ### 1. Clone the repository

@@ -14,7 +14,7 @@ public interface UserService {
 
     String saveNewUser(RegisterReq registerReq);
 
-    Optional<User> checkOtpAndGetUser(String phoneNumber, String code);
+    User checkOtpAndGetUser(String phoneNumber, String code);
 
     boolean toggleUserVisibility(Long id);
 

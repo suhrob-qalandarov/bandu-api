@@ -55,6 +55,11 @@ public class FilterChainConfig {
                                 API + V1 + PLACES,
                                 API + V1 + PLACES + WAY_ONE
                         ).permitAll()
+
+                        .requestMatchers(
+                                API + V1 + ADMIN + PLACES + WAY_ALL
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
         );
 

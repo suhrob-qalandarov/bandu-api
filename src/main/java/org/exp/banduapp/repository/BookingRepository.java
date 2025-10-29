@@ -5,6 +5,7 @@ import org.exp.banduapp.models.entities.Place;
 import org.exp.banduapp.models.entities.User;
 import org.exp.banduapp.models.enums.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -42,4 +43,19 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         ORDER BY b.startTime
         """)
     List<Object[]> findBookedTimeSlotsByPlace(@Param("place") Place place);
+
+    @Modifying
+    @Query(value = """
+    UPDATE bookings
+    SET status = 'CANCELLED'
+    WHERE id = :bookingId
+      AND user_id = :userId
+      AND visibility = true
+      AND status IN ('PENDING', 'CONFIRMED')
+    RETURNING *
+    """, nativeQuery = true)
+    List<Booking> cancelAndReturnBooking(
+            @Param("bookingId") Long bookingId,
+            @Param("userId") Long userId
+    );
 }

@@ -21,18 +21,20 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<PlaceRes> getAllPlaces() {
-        return placeRepository.findAll().stream()
+        return placeRepository.findAllByVisibility(true).stream()
                 .map(this::convertToPlaceRes)
                 .toList();
     }
 
     @Override
     public PlaceRes getPlaceById(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow();
+        Place place = placeRepository.findByIdAndVisibilityTrue(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("Place not found or not visible"));
         return convertToPlaceRes(place);
     }
 
-    private PlaceRes convertToPlaceRes(Place place) {
+    @Override
+    public PlaceRes convertToPlaceRes(Place place) {
         List<TimeSlot> bookedSlots = bookingRepository.findBookedTimeSlotsByPlace(place).stream()
                 .map(row -> TimeSlot.builder()
                         .startTime((LocalDateTime) row[0])

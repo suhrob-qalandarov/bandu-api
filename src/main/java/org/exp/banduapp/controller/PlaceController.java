@@ -19,14 +19,14 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping
-    public ResponseEntity<?> getPlaces() {
-        List<PlaceRes> places = placeService.getAllPlaces();
-        return new ResponseEntity<>(places, HttpStatus.OK);
+    public ResponseEntity<List<PlaceRes>> getPlaces() {
+        List<PlaceRes> placesResList = placeService.getAllPlaces();
+        return new ResponseEntity<>(placesResList, HttpStatus.OK);
     }
 
     @GetMapping("/{placeId}")
-    public ResponseEntity<?> getPlaceById(@PathVariable Long placeId) {
-        PlaceRes places = placeService.getPlaceById(placeId);
-        return new ResponseEntity<>(places, HttpStatus.OK);
+    public ResponseEntity<PlaceRes> getPlaceById(@PathVariable Long placeId) {
+        PlaceRes placeRes = placeService.getPlaceById(placeId);
+        return new ResponseEntity<>(placeRes, HttpStatus.OK);
     }
 }

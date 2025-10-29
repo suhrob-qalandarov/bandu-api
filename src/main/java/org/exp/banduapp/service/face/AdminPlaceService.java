@@ -9,4 +9,6 @@ import org.springframework.stereotype.Service;
 public interface AdminPlaceService {
 
     PlaceRes addNewPlace(PlaceReq placeReq);
+
+    PlaceRes updatePlaceStatus(Long placeId, PlaceStatus status);
 }

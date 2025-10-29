@@ -32,7 +32,8 @@ public class PlaceServiceImpl implements PlaceService {
         return convertToPlaceRes(place);
     }
 
-    private PlaceRes convertToPlaceRes(Place place) {
+    @Override
+    public PlaceRes convertToPlaceRes(Place place) {
         List<TimeSlot> bookedSlots = bookingRepository.findBookedTimeSlotsByPlace(place).stream()
                 .map(row -> TimeSlot.builder()
                         .startTime((LocalDateTime) row[0])

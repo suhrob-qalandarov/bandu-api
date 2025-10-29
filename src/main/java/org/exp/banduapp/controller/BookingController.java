@@ -1,5 +1,6 @@
 package org.exp.banduapp.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.exp.banduapp.models.dto.request.BookingReq;
 import org.exp.banduapp.models.dto.response.BookingRes;
@@ -28,7 +29,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingRes> clientBookingPlace(@RequestBody BookingReq bookingReq, @AuthenticationPrincipal User user) {
+    public ResponseEntity<BookingRes> clientBookingPlace(@Valid @RequestBody BookingReq bookingReq, @AuthenticationPrincipal User user) {
         BookingRes bookingRes = bookingService.newBooking(bookingReq, user);
         return new ResponseEntity<>(bookingRes, HttpStatus.OK);
     }

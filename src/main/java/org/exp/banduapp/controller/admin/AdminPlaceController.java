@@ -1,5 +1,6 @@
 package org.exp.banduapp.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.exp.banduapp.models.dto.request.admin.PlaceReq;
 import org.exp.banduapp.models.dto.response.PlaceRes;
@@ -21,7 +22,7 @@ public class AdminPlaceController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PlaceRes> addNewPlace(@RequestBody PlaceReq placeReq) {
+    public ResponseEntity<PlaceRes> addNewPlace(@Valid @RequestBody PlaceReq placeReq) {
         PlaceRes placeRes = adminPlaceService.addNewPlace(placeReq);
         return new ResponseEntity<>(placeRes, HttpStatus.CREATED);
     }

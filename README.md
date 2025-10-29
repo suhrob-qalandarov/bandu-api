@@ -203,67 +203,52 @@ docker run -p 8080:8080 bandu-app
 ```
 
 🔧 Configuration Options
-Property
-Description
-Default
-server.port
-Server port
-8080
-jwt.secret
-JWT signing key
--
-jwt.expiration
-Token validity (day)
-7
-spring.jpa.hibernate.ddl-auto
-Schema generation
-update
+Property:                               Description:                  Default:
+ server.port                             Server port                   8080
+ jwt.secret                              JWT signing key               your-secure-secret-key
+ jwt.expiration                          Token validity (day)          7
+spring.jpa.hibernate.ddl-auto            Schema generation             update
+
+
 📝 Business Rules
-Bookings:
-Minimum booking duration: 1 hour
-Bookings expire 15 minutes before start time
-No overlapping bookings for same place
-Price calculated by: hours × place.pricePerHour
-Places:
-Only ACTIVE places can be booked
-Visibility controls public listing
-Users:
-Email must be unique
-Default role: USER
-Admin role required for admin endpoints
+1 Bookings:
+ - Minimum booking duration: 1 hour
+ - Bookings expire 15 minutes before start time
+ - No overlapping bookings for same place
+ - Price calculated by: hours × place.pricePerHour
+ 
+2 Places:
+ - Only ACTIVE places can be booked
+ - Visibility controls public listing
+ 
+3 Users:
+ - Phone number must be unique
+ - Default role: USER
+ - Admin role required for admin endpoints
+ 
 🛠️ Development
 Code Style
-Follow Java naming conventions
-Use Lombok annotations for boilerplate code
-Service layer pattern (interface + implementation)
-DTO pattern for API requests/responses
+ - Follow Java naming conventions
+ - Use Lombok annotations for boilerplate code
+ - Service layer pattern (interface + implementation)
+ - DTO pattern for API requests/responses
 Adding New Features
-Create entity in models/entities
-Create repository in repository
-Create service interface in service/face
-Implement service in service/impl
-Create controller in controller
-Add DTOs in models/dto
+ - Create entity in models/entities
+ - Create repository in repository
+ - Create service interface in service/face
+ - Implement service in service/impl
+ - Create controller in controller
+ - Add DTOs in models/dto
+ 
 🤝 Contributing
-Fork the repository
-Create feature branch (git checkout -b feature/amazing-feature)
-Commit changes (git commit -m 'Add amazing feature')
-Push to branch (git push origin feature/amazing-feature)
-Open Pull Request
-📄 License
-[Your License Here]
-👥 Authors
-[Your Name/Team]
-📞 Support
-For issues and questions, please open an issue on GitHub.``` 
+1.Fork the repository
+2.Create feature branch (git checkout -b feature/amazing-feature)
+3.Commit changes (git commit -m 'Add amazing feature')
+4.Push to branch (git push origin feature/amazing-feature)
+5.Open Pull Request
 
-Bu README fayl:
-- ✅ Professional va to'liq
-- ✅ Loyihangizning haqiqiy strukturasiga mos
-- ✅ Setup instructions bilan
-- ✅ API documentation
-- ✅ Docker support
-- ✅ Business rules tushuntirilgan
-
-Kerakli joylarni (license, author, repository URL) o'zingizning ma'lumotlaringiz bilan to'ldiring! 🚀
+📄 License Apache.license
+👤 Author: Suhrob-Qalandarov
+📞 Support: For issues and questions, please open an issue on GitHub.
+👥 LinkedIn: https://www.linkedin.com/in/suhrob-qalandarov``` 
 ```

@@ -5,24 +5,24 @@ import java.math.BigDecimal;
 
 public record PlaceReq(
 
-        @NotBlank(message = "Name is required")
-        @Size(max = 100, message = "Name must not exceed 100 characters")
+        @NotBlank(message = "Joy nomi kiritilishi shart")
+        @Size(max = 100, message = "Joy nomi 100 belgidan oshmasligi kerak")
         String name,
 
-        @NotBlank(message = "Description is required")
+        @NotBlank(message = "Tavsif kiritilishi shart")
         String description,
 
-        @NotBlank(message = "Address is required")
-        @Size(max = 255, message = "Address must not exceed 255 characters")
+        @NotBlank(message = "Manzil kiritilishi shart")
+        @Size(max = 255, message = "Manzil 255 belgidan oshmasligi kerak")
         String address,
 
-        @NotNull(message = "Capacity is required")
-        @Positive(message = "Capacity must be positive")
-        @Max(value = 1000, message = "Capacity cannot exceed 1000")
+        @NotNull(message = "Sig'imi kiritilishi shart")
+        @Positive(message = "Sig'im musbat son bo'lishi kerak")
+        @Max(value = 1000, message = "Sig'im 1000 dan oshmasligi kerak")
         Integer capacity,
 
-        @NotNull(message = "Price per hour is required")
-        @PositiveOrZero(message = "Price must be zero or positive")
-        @Digits(integer = 10, fraction = 2, message = "Price format is invalid")
+        @NotNull(message = "Soatlik narx kiritilishi shart")
+        @PositiveOrZero(message = "Narx nol yoki musbat bo'lishi kerak")
+        @Digits(integer = 10, fraction = 2, message = "Narx formati noto'g'ri (masalan: 150000.50)")
         BigDecimal pricePerHour
 ) {}

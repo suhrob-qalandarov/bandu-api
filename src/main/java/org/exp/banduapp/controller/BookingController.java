@@ -31,6 +31,12 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<BookingRes> clientBookingPlace(@Valid @RequestBody BookingReq bookingReq, @AuthenticationPrincipal User user) {
         BookingRes bookingRes = bookingService.newBooking(bookingReq, user);
+        return new ResponseEntity<>(bookingRes, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{bookingId}")
+    public ResponseEntity<BookingRes> clientCancelledBooking(@PathVariable Long bookingId, @AuthenticationPrincipal User user) {
+        BookingRes bookingRes = bookingService.cancelBooking(bookingId, user);
         return new ResponseEntity<>(bookingRes, HttpStatus.OK);
     }
 }

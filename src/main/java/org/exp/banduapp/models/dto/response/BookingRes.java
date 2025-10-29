@@ -12,7 +12,9 @@ public record BookingRes(
         String placeAddress,
         LocalDateTime startTime,
         LocalDateTime endTime,
+        BigDecimal pricePerHour,
         BigDecimal totalPrice,
         String status,
-        String note
+        String note,
+        LocalDateTime expiresAt
 ) {}

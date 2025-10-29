@@ -114,11 +114,14 @@ Or build and run:``` bash
 java -jar target/bandu-app-0.0.1-SNAPSHOT.jar
 ```
 
-4. Access the application
-API Base URL: http://localhost:8080/api
-Swagger UI: http://localhost:8080/swagger-ui.html
-API Docs: http://localhost:8080/v3/api-docs
-📚 API Endpoints
+4. Access the application:
+
+  API Base URL: http://localhost:8080/api
+  Swagger UI: http://localhost:8080/swagger-ui.html
+  API Docs: http://localhost:8080/v3/api-docs
+  
+📚 API Endpoints:
+
 Authentication``` 
 POST   /api/v1/auth/register     - Register new user
 POST   /api/v1/auth/login        - Login and get JWT token

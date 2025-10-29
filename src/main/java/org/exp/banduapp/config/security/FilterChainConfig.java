@@ -60,6 +60,10 @@ public class FilterChainConfig {
                                 API + V1 + ADMIN + PLACES + WAY_ALL
                         ).hasRole("ADMIN")
 
+                        .requestMatchers(
+                                API + V1 + ADMIN + BOOKINGS + WAY_ALL
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
         );
 

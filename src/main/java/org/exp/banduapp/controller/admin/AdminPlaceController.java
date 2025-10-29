@@ -33,8 +33,9 @@ public class AdminPlaceController {
         return new ResponseEntity<>(placeRes, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> placeVisibility() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping("/{placeId}")
+    public ResponseEntity<Void> hidePlace(@PathVariable Long placeId) {
+        adminPlaceService.hidePlaceWithVisibility(placeId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

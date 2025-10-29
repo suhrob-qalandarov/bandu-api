@@ -38,9 +38,9 @@ RESTful API for place booking management system built with Spring Boot.
 - ✅ Booking expiration handling
 - ✅ Price calculation based on hourly rates
 
-## 🏗️ Project Structure
 ```
 ``` markdown
+## 🏗️ Project Structure
 src/main/java/org/exp/banduapp/ 
 ├── config/ # Configuration classes 
 │ 
@@ -117,9 +117,11 @@ java -jar target/bandu-app-0.0.1-SNAPSHOT.jar
 
 4. Access the application:
 
+``` markdown
   API Base URL: http://localhost:8080/api
   Swagger UI: http://localhost:8080/swagger-ui.html
   API Docs: http://localhost:8080/v3/api-docs
+```
   
 📚 API Endpoints:
 

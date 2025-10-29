@@ -29,6 +29,9 @@ public class Booking extends BaseEntity {
     private Place place;
 
     @Column(nullable = false)
+    private LocalDateTime startTime;
+
+    @Column(nullable = false)
     private LocalDateTime endTime;
 
     @Column(nullable = false)

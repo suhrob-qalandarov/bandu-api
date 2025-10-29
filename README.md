@@ -41,7 +41,29 @@ RESTful API for place booking management system built with Spring Boot.
 ## 🏗️ Project Structure
 ```
 
-src/main/java/org/exp/banduapp/ ├── config/ # Configuration classes │ ├── advice/ # Global exception handlers │ ├── audit/ # JPA auditing config │ ├── mockinit/ # Initial data loading │ ├── security/ # Security & JWT configuration │ └── swagger/ # API documentation config ├── controller/ # REST endpoints │ ├── admin/ # Admin-only endpoints │ ├── AuthController # Authentication endpoints │ ├── BookingController # User booking operations │ └── PlaceController # Place browsing ├── models/ │ ├── base/ # Base entities │ ├── dto/ # Request/Response DTOs │ ├── entities/ # JPA entities │ └── enums/ # Enumerations ├── repository/ # Spring Data repositories ├── service/ │ ├── face/ # Service interfaces │ └── impl/ # Service implementations └── util/ # Utility classes``` 
+src/main/java/org/exp/banduapp/ 
+├── config/ # Configuration classes 
+│ 
+├── advice/ # Global exception handlers 
+│ ├── audit/ # JPA auditing config 
+│ ├── mockinit/ # Initial data loading 
+│ ├── security/ # Security & JWT configuration 
+│ └── swagger/ # API documentation config 
+├── controller/ # REST endpoints 
+│ ├── admin/ # Admin-only endpoints 
+│ ├── AuthController # Authentication endpoints 
+│ ├── BookingController # User booking operations 
+│ └── PlaceController # Place browsing 
+├── models/ 
+│ ├── base/ # Base entities 
+│ ├── dto/ # Request/Response DTOs 
+│ ├── entities/ # JPA entities 
+│ └── enums/ # Enumerations 
+├── repository/ # Spring Data repositories 
+├── service/ │ 
+├── face/ # Service interfaces 
+│ └── impl/ # Service implementations 
+└── util/ # Utility classes``` 
 
 ## 🔧 Setup & Installation
 

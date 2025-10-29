@@ -2,6 +2,7 @@ package org.exp.banduapp.service.face;
 
 import org.exp.banduapp.models.dto.request.BookingReq;
 import org.exp.banduapp.models.dto.response.BookingRes;
+import org.exp.banduapp.models.entities.Booking;
 import org.exp.banduapp.models.entities.User;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,6 @@ public interface BookingService {
     BookingRes newBooking(BookingReq bookingReq, User user);
 
     BookingRes cancelBooking(Long bookingId, User user);
+
+    BookingRes convertToBookingRes(Booking booking);
 }

@@ -50,6 +50,11 @@ public class FilterChainConfig {
                                 API + V1 + AUTH + VERIFY + WAY_ALL,
                                 API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                API + V1 + PLACES,
+                                API + V1 + PLACES + WAY_ONE
+                        ).permitAll()
                         .anyRequest().authenticated()
         );
 

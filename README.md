@@ -120,46 +120,46 @@ Swagger UI: http://localhost:8080/swagger-ui.html
 API Docs: http://localhost:8080/v3/api-docs
 📚 API Endpoints
 Authentication``` 
-POST   /api/auth/register     - Register new user
-POST   /api/auth/login        - Login and get JWT token
-GET    /api/auth/me           - Get current user info
+POST   /api/v1/auth/register     - Register new user
+POST   /api/v1/auth/login        - Login and get JWT token
+GET    /api/v1/auth/me           - Get current user info
 ```
 
 Places (Public)``` 
-GET    /api/places            - Get all active places
-GET    /api/places/{id}       - Get place by ID
+GET    /api/v1/places            - Get all active places
+GET    /api/v1/places/{id}       - Get place by ID
 ```
 
 Bookings (Authenticated)``` 
-GET    /api/bookings          - Get user's bookings
-POST   /api/bookings          - Create new booking
+GET    /api/v1/bookings          - Get user's bookings
+POST   /api/v1/bookings          - Create new booking
 ```
 
 Admin - Places``` 
-GET    /api/admin/places      - Get all places
-POST   /api/admin/places      - Create new place
-PUT    /api/admin/places/{id} - Update place
-DELETE /api/admin/places/{id} - Delete place
+GET    /api/v1/admin/places      - Get all places
+POST   /api/v1/admin/places      - Create new place
+PUT    /api/v1/admin/places/{id} - Update place
+DELETE /api/v1/admin/places/{id} - Delete place
 ```
 
 Admin - Users``` 
-GET    /api/admin/users       - Get all users
-PUT    /api/admin/users/{id}  - Update user
-DELETE /api/admin/users/{id}  - Delete user
+GET    /api/v1/admin/users       - Get all users
+PUT    /api/v1/admin/users/{id}  - Update user
+DELETE /api/v1/admin/users/{id}  - Delete user
 ```
 
 Admin - Bookings``` 
-GET    /api/admin/bookings    - Get all bookings
-PUT    /api/admin/bookings/{id}/status - Update booking status
+GET    /api/v1/admin/bookings    - Get all bookings
+PUT    /api/v1/admin/bookings/{id}/status - Update booking status
 ```
 
 🔐 Authentication
 The API uses JWT (JSON Web Token) for authentication.
 Getting a token:``` bash
-curl -X POST http://localhost:8080/api/auth/login \
+curl -X POST http://localhost:8080/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "user@example.com",
+    "phoneNumber": "+998901234567",
     "password": "password123"
   }'
 ```
@@ -172,7 +172,7 @@ curl -X GET http://localhost:8080/api/bookings \
 📊 Database Schema
 Main Entities
 User - System users (customers & admins)
-Role - User roles (USER, ADMIN)
+Role - User roles (USER, ADMIN, SUPER_ADMIN)
 Place - Bookable venues/places
 Booking - Reservation records
 Key Relationships
@@ -213,8 +213,8 @@ jwt.secret
 JWT signing key
 -
 jwt.expiration
-Token validity (ms)
-86400000
+Token validity (day)
+7
 spring.jpa.hibernate.ddl-auto
 Schema generation
 update

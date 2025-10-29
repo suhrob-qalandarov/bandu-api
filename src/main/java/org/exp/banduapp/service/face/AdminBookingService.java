@@ -11,4 +11,6 @@ public interface AdminBookingService {
     List<BookingRes> getBookingsResList();
 
     BookingRes getBookingRes(Long bookingId);
+
+    BookingRes confirmBooking(Long bookingId);
 }

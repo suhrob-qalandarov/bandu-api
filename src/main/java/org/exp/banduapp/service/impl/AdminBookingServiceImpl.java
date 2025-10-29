@@ -31,4 +31,16 @@ public class AdminBookingServiceImpl implements AdminBookingService {
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + bookingId));
         return bookingService.convertToBookingRes(booking);
     }
+
+    @Override
+    public BookingRes confirmBooking(Long bookingId) {
+        List<Booking> result = bookingRepository.confirmAndReturnBooking(bookingId);
+
+        if (result.isEmpty()) {
+            throw new IllegalStateException("Bron topilmadi yoki qabul qilib bo'lmaydi");
+        }
+
+        Booking confirmedBooking = result.getFirst();
+        return bookingService.convertToBookingRes(confirmedBooking);
+    }
 }

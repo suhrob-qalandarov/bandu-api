@@ -105,10 +105,11 @@ jwt.token.lifetime.days=7
 server.port=8080
 ```
 
-3. Run the application
+3. Run the application:
+```
 Using Maven:
 ./mvnw spring-boot:run
-```
+
 Or build and run:
 ./mvnw clean package
 java -jar target/bandu-app-0.0.1-SNAPSHOT.jar

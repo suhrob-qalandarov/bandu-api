@@ -12,7 +12,7 @@ RESTful API for place booking management system built with Spring Boot.
 - **JWT** - Token-based authentication
 - **Lombok** - Boilerplate code reduction
 - **Swagger/OpenAPI** - API documentation
-- **PostgreSQL/MySQL** - Database (configure in application.properties)
+- **PostgreSQL** - Database (configure in application.properties)
 - **Maven** - Dependency management
 
 ## 📋 Features

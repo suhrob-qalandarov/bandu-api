@@ -79,10 +79,10 @@ src/main/java/org/exp/banduapp/
 git clone https://github.com/suhrob-qalandarov/bandu-api
 cd bandu-app
 ```
-```
 
 2. Configure database
 Edit src/main/resources/application.properties:
+```
 # App
 spring.application.name=bandu-app
 
@@ -106,11 +106,12 @@ server.port=8080
 ```
 
 3. Run the application:
-```
 Using Maven:
+```
 ./mvnw spring-boot:run
-
+```
 Or build and run:
+```
 ./mvnw clean package
 java -jar target/bandu-app-0.0.1-SNAPSHOT.jar
 ```
@@ -125,43 +126,50 @@ java -jar target/bandu-app-0.0.1-SNAPSHOT.jar
   
 📚 API Endpoints:
 
-Authentication``` 
+Authentication
+``` 
 POST   /api/v1/auth/register     - Register new user
 POST   /api/v1/auth/login        - Login and get JWT token
 GET    /api/v1/auth/me           - Get current user info
 ```
 
-Places (Public)``` 
+Places (Public)
+``` 
 GET    /api/v1/places            - Get all active places
 GET    /api/v1/places/{id}       - Get place by ID
 ```
 
-Bookings (Authenticated)``` 
+Bookings (Authenticated)
+``` 
 GET    /api/v1/bookings          - Get user's bookings
 POST   /api/v1/bookings          - Create new booking
 ```
 
-Admin - Places``` 
+Admin - Places
+``` 
 GET    /api/v1/admin/places      - Get all places
 POST   /api/v1/admin/places      - Create new place
 PUT    /api/v1/admin/places/{id} - Update place
 DELETE /api/v1/admin/places/{id} - Delete place
 ```
 
-Admin - Users``` 
+Admin - Users
+``` 
 GET    /api/v1/admin/users       - Get all users
 PUT    /api/v1/admin/users/{id}  - Update user
 DELETE /api/v1/admin/users/{id}  - Delete user
 ```
 
-Admin - Bookings``` 
+Admin - Bookings
+``` 
 GET    /api/v1/admin/bookings    - Get all bookings
 PUT    /api/v1/admin/bookings/{id}/status - Update booking status
 ```
 
 🔐 Authentication
 The API uses JWT (JSON Web Token) for authentication.
-Getting a token:``` bash
+Getting a token:
+``` bash
 curl -X POST http://localhost:8080/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -170,7 +178,8 @@ curl -X POST http://localhost:8080/api/v1/auth/login \
   }'
 ```
 
-Using the token:``` bash
+Using the token:
+``` bash
 curl -X GET http://localhost:8080/api/bookings \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
@@ -185,7 +194,8 @@ Key Relationships
 User → Role (Many-to-Many)
 Booking → User (Many-to-One)
 Booking → Place (Many-to-One)
-🧪 Testing``` bash
+🧪 Testing
+``` bash
 # Run all tests
 ./mvnw test
 
@@ -193,7 +203,8 @@ Booking → Place (Many-to-One)
 ./mvnw test jacoco:report
 ```
 
-🐳 Docker Support``` dockerfile
+🐳 Docker Support
+``` dockerfile
 # Dockerfile example
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
@@ -202,7 +213,8 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
-Build and run:``` bash
+Build and run:
+``` bash
 ./mvnw clean package
 docker build -t bandu-app .
 docker run -p 8080:8080 bandu-app
@@ -213,7 +225,7 @@ Property:                               Description:                  Default:
  server.port                             Server port                   8080
  jwt.secret                              JWT signing key               your-secure-secret-key
  jwt.expiration                          Token validity (day)          7
-spring.jpa.hibernate.ddl-auto            Schema generation             update
+ spring.jpa.hibernate.ddl-auto           Schema generation             update
 
 
 📝 Business Rules

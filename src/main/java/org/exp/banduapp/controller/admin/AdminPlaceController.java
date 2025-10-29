@@ -7,6 +7,7 @@ import org.exp.banduapp.models.enums.PlaceStatus;
 import org.exp.banduapp.service.face.AdminPlaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.exp.banduapp.util.Constants.*;
@@ -19,12 +20,14 @@ public class AdminPlaceController {
     private final AdminPlaceService adminPlaceService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlaceRes> addNewPlace(@RequestBody PlaceReq placeReq) {
         PlaceRes placeRes = adminPlaceService.addNewPlace(placeReq);
         return new ResponseEntity<>(placeRes, HttpStatus.CREATED);
     }
 
     @PutMapping("/{placeId}/status/{status}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlaceRes> updatePlaceStatus(
             @PathVariable Long placeId,
             @PathVariable PlaceStatus status
@@ -34,6 +37,7 @@ public class AdminPlaceController {
     }
 
     @DeleteMapping("/{placeId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> hidePlace(@PathVariable Long placeId) {
         adminPlaceService.hidePlaceWithVisibility(placeId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

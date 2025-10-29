@@ -46,8 +46,8 @@ public class BookingServiceImpl implements BookingService {
         Place place = placeRepository.findByIdAndVisibilityTrue(bookingReq.placeId())
                 .orElseThrow(() -> new IllegalArgumentException("Place not found or not visible"));
 
-        if (place.getStatus() != PlaceStatus.AVAILABLE) {
-            throw new IllegalStateException("Place is not available for booking");
+        if (place.getStatus() != PlaceStatus.ACTIVE) {
+            throw new IllegalStateException("Place is not active for booking");
         }
 
         LocalDateTime start = bookingReq.startTime();

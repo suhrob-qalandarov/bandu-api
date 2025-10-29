@@ -32,4 +32,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
+
+    @Query("""
+        SELECT b.startTime, b.endTime
+        FROM Booking b
+        WHERE b.place = :place
+          AND b.status IN ('PENDING', 'CONFIRMED')
+          AND b.visibility = true
+        ORDER BY b.startTime
+        """)
+    List<Object[]> findBookedTimeSlotsByPlace(@Param("place") Place place);
 }

@@ -32,7 +32,7 @@ public class Place extends BaseEntity {
     @Builder.Default
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PlaceStatus status = PlaceStatus.AVAILABLE;
+    private PlaceStatus status = PlaceStatus.ACTIVE;
 
     @Builder.Default
     @Column(nullable = false)

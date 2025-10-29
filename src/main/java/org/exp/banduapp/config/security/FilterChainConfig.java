@@ -43,23 +43,27 @@ public class FilterChainConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // Public auth endpoint
+                        // Public auth endpoints
                         .requestMatchers(
                                 HttpMethod.POST,
                                 API + V1 + AUTH + REGISTER,
                                 API + V1 + AUTH + VERIFY + WAY_ALL,
                                 API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
+
+                        // Public places endpoints
                         .requestMatchers(
                                 HttpMethod.GET,
                                 API + V1 + PLACES,
                                 API + V1 + PLACES + WAY_ONE
                         ).permitAll()
 
+                        // Admin places endpoints
                         .requestMatchers(
                                 API + V1 + ADMIN + PLACES + WAY_ALL
                         ).hasRole("ADMIN")
 
+                        // Admin bookings endpoints
                         .requestMatchers(
                                 API + V1 + ADMIN + BOOKINGS + WAY_ALL
                         ).hasRole("ADMIN")

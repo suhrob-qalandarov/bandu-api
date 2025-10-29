@@ -21,7 +21,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<PlaceRes> getAllPlaces() {
-        return placeRepository.findAll().stream()
+        return placeRepository.findAllByVisibility(true).stream()
                 .map(this::convertToPlaceRes)
                 .toList();
     }

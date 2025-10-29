@@ -60,8 +60,8 @@ src/main/java/org/exp/banduapp/
 │ ├── entities/ # JPA entities 
 │ └── enums/ # Enumerations 
 ├── repository/ # Spring Data repositories 
-├── service/ │ 
-├── face/ # Service interfaces 
+├── service/ 
+│ ├── face/ # Service interfaces 
 │ └── impl/ # Service implementations 
 └── util/ # Utility classes``` 
 
@@ -81,19 +81,24 @@ cd bandu-app
 ```
 
 2. Configure database
-Edit src/main/resources/application.properties:``` properties
-# Database Configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/banduapp
+Edit src/main/resources/application.properties:
+# App
+spring.application.name=bandu-app
+
+# Datasource
+spring.datasource.url=jdbc:postgresql://localhost:5432/bandu_app_db
 spring.datasource.username=your_username
 spring.datasource.password=your_password
+spring.datasource.driverClassName=org.postgresql.Driver
 
-# JPA/Hibernate
+# JPA
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 
 # JWT Configuration
-jwt.secret=your-secret-key-here
-jwt.expiration=86400000
+jwt.secret.key=your-very-secure-secret-key-must-be-at-least-32-bytes-long!!!
+jwt.token.lifetime.days=7
 
 # Server Configuration
 server.port=8080

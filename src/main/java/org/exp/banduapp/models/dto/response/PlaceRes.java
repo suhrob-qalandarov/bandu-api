@@ -8,6 +8,7 @@ import java.util.List;
 public record PlaceRes(
         Long id,
         String name,
+        String description,
         String address,
         Integer capacity,
         BigDecimal pricePerHour,

@@ -20,6 +20,9 @@ public class Place extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String description;
+
     @Column(nullable = false)
     private String address;
 

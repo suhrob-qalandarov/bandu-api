@@ -43,6 +43,7 @@ public class PlaceServiceImpl implements PlaceService {
         return PlaceRes.builder()
                 .id(place.getId())
                 .name(place.getName())
+                .description(place.getDescription())
                 .address(place.getAddress())
                 .capacity(place.getCapacity())
                 .pricePerHour(place.getPricePerHour())

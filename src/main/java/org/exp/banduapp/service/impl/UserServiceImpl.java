@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         boolean existsUserByPhoneNumber = userRepository.existsUserByPhoneNumber(registerReq.phoneNumber());
 
         if (existsUserByPhoneNumber) {
-            throw new RuntimeException("Already exist!");
+            throw new RuntimeException("Foydalanuvchi tizimda mavjud!");
         }
 
         User buildUser = convertToEntityFromRegisterReq(registerReq);
@@ -49,9 +49,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> checkOtpAndGetUser(String phoneNumber, String otpCode) {
+    public User checkOtpAndGetUser(String phoneNumber, String otpCode) {
         String fullPhone = getCorrectNumber(phoneNumber);
-        return userRepository.findByPhoneNumberAndOtpCode(fullPhone, otpCode);
+        String cleanOtp = otpCode.trim();
+
+        User user = userRepository.findByPhoneNumber(fullPhone)
+                .orElseThrow(() -> new RuntimeException("Foydalanuvchi topilmadi: " + fullPhone));
+
+        if (!cleanOtp.equals(user.getOtpCode())) {
+            throw new RuntimeException("Tasdiqlash kodi noto'g'ri");
+        }
+
+        return user;
     }
 
     @Override
@@ -59,14 +68,14 @@ public class UserServiceImpl implements UserService {
         String fullPhone = getCorrectNumber(phoneNumber);
 
         User user = userRepository.findByPhoneNumber(fullPhone)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Telefon raqami topilmadi!"));
 
         if (!user.isVisibility()) {
-            throw new RuntimeException("User inactive");
+            throw new RuntimeException("Hisobingiz faollashtirilmagan. SMS kod bilan tasdiqlang!");
         }
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("Parol noto'g'ri!");
         }
 
         return user;
@@ -100,7 +109,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getCorrectNumber(String phoneNumber) {
-        return phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber;
+        if (phoneNumber == null) return null;
+
+        String cleaned = phoneNumber.replaceAll("\\s+", "");
+
+        if (cleaned.startsWith("+998") && cleaned.length() == 13) {
+            return cleaned;
+        }
+        if (cleaned.startsWith("998") && cleaned.length() == 12) {
+            return "+" + cleaned;
+        }
+        return cleaned.startsWith("+") ? cleaned : "+" + cleaned;
     }
 
     @Override

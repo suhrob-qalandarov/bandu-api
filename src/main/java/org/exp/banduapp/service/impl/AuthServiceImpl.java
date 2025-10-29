@@ -31,12 +31,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public LoginRes verifyClient(String phoneNumber, String otpCode) {
         String cleanOtp = otpCode.trim();
-        Optional<User> optionalUser = userService.checkOtpAndGetUser(phoneNumber, cleanOtp);
-
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("Invalid OTP");
-        }
-        User user = optionalUser.get();
+        User user = userService.checkOtpAndGetUser(phoneNumber, cleanOtp);
 
         boolean affected = userService.toggleUserVisibility(user.getId());
         if (affected) log.info("User activated userId={}", user.getId());

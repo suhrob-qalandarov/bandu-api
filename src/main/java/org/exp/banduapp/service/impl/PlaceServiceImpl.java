@@ -28,7 +28,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceRes getPlaceById(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow();
+        Place place = placeRepository.findByIdAndVisibilityTrue(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("Place not found or not visible"));
         return convertToPlaceRes(place);
     }
 

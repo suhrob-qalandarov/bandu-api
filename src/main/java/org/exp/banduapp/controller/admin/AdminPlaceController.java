@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.exp.banduapp.util.Constants.*;
 
 @RestController
@@ -19,6 +21,20 @@ import static org.exp.banduapp.util.Constants.*;
 public class AdminPlaceController {
 
     private final AdminPlaceService adminPlaceService;
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<PlaceRes>> getPlaces() {
+        List<PlaceRes> placeResList = adminPlaceService.getPlaceResList();
+        return new ResponseEntity<>(placeResList, HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{placeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PlaceRes> getPlace(@PathVariable Long placeId) {
+        PlaceRes placeRes = adminPlaceService.getPlaceRes(placeId);
+        return new ResponseEntity<>(placeRes, HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")

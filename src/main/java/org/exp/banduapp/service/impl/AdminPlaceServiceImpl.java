@@ -22,6 +22,20 @@ public class AdminPlaceServiceImpl implements AdminPlaceService {
     private final PlaceRepository placeRepository;
 
     @Override
+    public PlaceRes getPlaceRes(Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new EntityNotFoundException("Place not found with id: " + placeId));
+        return placeService.convertToPlaceRes(place);
+    }
+
+    @Override
+    public List<PlaceRes> getPlaceResList() {
+        return placeRepository.findAll().stream()
+                .map(placeService::convertToPlaceRes)
+                .toList();
+    }
+
+    @Override
     public PlaceRes addNewPlace(PlaceReq request) {
         Place builtPlace = Place.builder()
                 .name(request.name())

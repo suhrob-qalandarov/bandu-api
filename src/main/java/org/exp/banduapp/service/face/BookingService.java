@@ -13,4 +13,6 @@ public interface BookingService {
     List<BookingRes> getUserBookingsRes(User user);
 
     BookingRes newBooking(BookingReq bookingReq, User user);
+
+    BookingRes cancelBooking(Long bookingId, User user);
 }

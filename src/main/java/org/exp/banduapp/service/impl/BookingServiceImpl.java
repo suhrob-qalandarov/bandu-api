@@ -96,6 +96,21 @@ public class BookingServiceImpl implements BookingService {
         return convertToBookingRes(booking);
     }
 
+    @Override
+    public BookingRes cancelBooking(Long bookingId, User user) {
+        List<Booking> result = bookingRepository.cancelAndReturnBooking(
+                bookingId,
+                user.getId()
+        );
+
+        if (result.isEmpty()) {
+            throw new IllegalStateException("Bron topilmadi yoki bekor qilib bo'lmaydi");
+        }
+
+        Booking cancelledBooking = result.getFirst();
+        return convertToBookingRes(cancelledBooking);
+    }
+
     private BookingRes convertToBookingRes(Booking booking) {
         return BookingRes.builder()
                 .id(booking.getId())

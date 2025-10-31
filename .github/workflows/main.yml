@@ -3,7 +3,7 @@ name: Deploy Bandu App to Production
 on:
   push:
     branches:
-      - main  # Faqat main!
+      - main
 
 jobs:
   deploy:
@@ -21,27 +21,27 @@ jobs:
       - name: Build JAR
         run: ./mvnw clean package -DskipTests -Pprod
 
-      - name: Copy files
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: root
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "target/bandu-app.jar,docker-compose.yml,Dockerfile"
-          target: /root/bandu_app
-          overwrite: true
+      # sshpass o'rnatish
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Deploy
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: root
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
+      # Fayllarni ko'chirish (sshpass bilan)
+      - name: Copy files with sshpass
+        run: |
+          sshpass -p '${{ secrets.SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 22 \
+            target/bandu-app.jar \
+            docker-compose.yml \
+            Dockerfile \
+            root@${{ secrets.SERVER_IP }}:/root/bandu_app/ || exit 1
+
+      # Deploy (sshpass bilan)
+      - name: Deploy with sshpass
+        run: |
+          sshpass -p '${{ secrets.SERVER_PASSWORD }}' ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${{ secrets.SERVER_IP }} /bin/bash << 'EOF'
             cd /root/bandu_app
 
-            # .env — sizning secrets'ingizga mos!
-            cat > .env << EOF
+            # .env yaratish
+            cat > .env << ENV
             DATASOURCE_URL=jdbc:postgresql://bandu_db:5432/bandu_app_db
             DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
             DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
@@ -49,15 +49,15 @@ jobs:
             JPA_SHOW_SQL=true
             JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
-            EOF
+            ENV
 
             # Docker tozalash va qayta ishga tushirish
             docker compose down -v || true
             docker system prune -f --volumes || true
-
             docker compose up -d --build
 
             # Tekshirish
             sleep 20
             docker ps -a
             docker logs bandu-app-web
+EOF

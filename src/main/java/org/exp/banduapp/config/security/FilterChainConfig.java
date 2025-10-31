@@ -43,6 +43,12 @@ public class FilterChainConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
+                        // Public roadmap get endpoints
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                API + V1 + ROADMAP
+                        ).permitAll()
+
                         // Public auth endpoints
                         .requestMatchers(
                                 HttpMethod.POST,

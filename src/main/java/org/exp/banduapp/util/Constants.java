@@ -18,6 +18,8 @@ public interface Constants {
     String PLACE ="/place";
     String PLACES ="/places";
 
+    String ROADMAP ="/roadmap";
+
     String BOOKING = "/booking";
     String BOOKINGS = "/bookings";
 

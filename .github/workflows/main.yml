@@ -1,0 +1,64 @@
+name: Deploy Bandu App to Production
+
+on:
+  push:
+    branches:
+      - main  # Faqat main!
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build JAR
+        run: ./mvnw clean package -DskipTests -Pprod
+
+      - name: Copy files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: root
+          password: ${{ secrets.HOST_PASSWORD }}
+          source: "target/bandu-app.jar,docker-compose.yml,Dockerfile"
+          target: /root/bandu_app
+          overwrite: true
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: root
+          password: ${{ secrets.HOST_PASSWORD }}
+          script: |
+            cd /root/bandu_app
+
+            # .env — hammasi secrets dan!
+            cat > .env << EOF
+            DATASOURCE_URL=jdbc:postgresql://bandu_db:5432/bandu_app_db
+            DATASOURCE_USERNAME=postgres
+            DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
+            JPA_DDL=${{ secrets.JPA_DDL }}
+            JPA_SHOW_SQL=true
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET }}
+            JWT_TOKEN_LIFETIME_DAYS=${{ secrets.JWT_TOKEN_LIFETIME_DAYS }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            EOF
+
+            # Docker tozalash va qayta ishga tushirish
+            docker compose down -v || true
+            docker system prune -f --volumes || true
+
+            docker compose up -d --build
+
+            # Tekshirish
+            sleep 20
+            docker ps -a
+            docker logs bandu-app-web

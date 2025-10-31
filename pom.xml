@@ -105,6 +105,7 @@
     </dependencies>
 
     <build>
+        <finalName>bandu-app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

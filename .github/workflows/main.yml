@@ -24,9 +24,9 @@ jobs:
       - name: Copy files
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.HOST_IP }}
+          host: ${{ secrets.SERVER_IP }}
           username: root
-          password: ${{ secrets.HOST_PASSWORD }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           source: "target/bandu-app.jar,docker-compose.yml,Dockerfile"
           target: /root/bandu_app
           overwrite: true
@@ -34,22 +34,21 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST_IP }}
+          host: ${{ secrets.SERVER_IP }}
           username: root
-          password: ${{ secrets.HOST_PASSWORD }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /root/bandu_app
 
-            # .env — hammasi secrets dan!
+            # .env — sizning secrets'ingizga mos!
             cat > .env << EOF
             DATASOURCE_URL=jdbc:postgresql://bandu_db:5432/bandu_app_db
-            DATASOURCE_USERNAME=postgres
-            DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
+            DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
             JPA_DDL=${{ secrets.JPA_DDL }}
             JPA_SHOW_SQL=true
-            JWT_SECRET_KEY=${{ secrets.JWT_SECRET }}
-            JWT_TOKEN_LIFETIME_DAYS=${{ secrets.JWT_TOKEN_LIFETIME_DAYS }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+            JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
             EOF
 
             # Docker tozalash va qayta ishga tushirish

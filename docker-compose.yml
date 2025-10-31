@@ -1,0 +1,39 @@
+services:
+  bandu_db:
+    image: postgres:15
+    container_name: bandu-app-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bandu_app_db
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+    volumes:
+      - bandu_pgdata:/var/lib/postgresql/data
+    networks:
+      - bandu-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATASOURCE_USERNAME} -d bandu_app_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bandu_app:
+    build: .
+    container_name: bandu-app-web
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    depends_on:
+      bandu_db:
+        condition: service_healthy
+    networks:
+      - bandu-network
+
+networks:
+  bandu-network:
+    driver: bridge
+
+volumes:
+  bandu_pgdata:

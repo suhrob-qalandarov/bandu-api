@@ -1,4 +1,4 @@
-name: Deploy Bandu App to Production
+name: Deploy Bandu App (HTTP Only)
 
 on:
   push:
@@ -21,12 +21,10 @@ jobs:
       - name: Build JAR
         run: ./mvnw clean package -DskipTests -Pprod
 
-      # sshpass o'rnatish
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      # Fayllarni ko'chirish (sshpass bilan)
-      - name: Copy files with sshpass
+      - name: Copy files to server
         run: |
           sshpass -p '${{ secrets.SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 22 \
             target/bandu-app.jar \
@@ -34,8 +32,7 @@ jobs:
             Dockerfile \
             root@${{ secrets.SERVER_IP }}:/root/bandu_app/ || exit 1
 
-      # Deploy (sshpass bilan)
-      - name: Deploy with sshpass
+      - name: Deploy app
         run: |
           sshpass -p '${{ secrets.SERVER_PASSWORD }}' ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${{ secrets.SERVER_IP }} /bin/bash << 'EOF'
             cd /root/bandu_app
@@ -58,6 +55,7 @@ jobs:
 
             # Tekshirish
             sleep 20
+            echo "=== Docker status ==="
             docker ps -a
+            echo "=== App logs ==="
             docker logs bandu-app-web
-EOF

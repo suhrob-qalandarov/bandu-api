@@ -79,6 +79,10 @@ public class FilterChainConfig {
                                 API + V1 + ADMIN + USERS + WAY_ALL
                         ).hasRole("ADMIN")
 
+                        .requestMatchers(
+                                API + V1 + ADMIN + ROADMAP + WAY_ALL
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
         );
 

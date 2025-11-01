@@ -23,13 +23,6 @@ public class RoadMap extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private Integer monthStart;
-
-    private Integer monthEnd;
-
-    @Column(columnDefinition = "TEXT")
-    private String goal;
-
     @Column(columnDefinition = "TEXT")
     private String result;
 

@@ -1,10 +1,13 @@
 package org.exp.banduapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.exp.banduapp.models.dto.request.admin.RoadMapTaskReq;
 import org.exp.banduapp.models.dto.response.RoadMapTaskRes;
 import org.exp.banduapp.models.entities.RoadMapTask;
 import org.exp.banduapp.service.face.RoadMapTaskService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,5 +20,20 @@ public class RoadMapTaskServiceImpl implements RoadMapTaskService {
                 .task(roadMapTask.getTask())
                 .completed(roadMapTask.isCompleted())
                 .build();
+    }
+
+    @Override
+    public RoadMapTask convertToEntity(RoadMapTaskReq roadMapTaskReq) {
+        return RoadMapTask.builder()
+                .task(roadMapTaskReq.task())
+                .visibility(roadMapTaskReq.visibility())
+                .build();
+    }
+
+    @Override
+    public List<RoadMapTask> convertListToEntityList(List<RoadMapTaskReq> roadMapTaskReqList) {
+        return roadMapTaskReqList.stream()
+                .map(this::convertToEntity)
+                .toList();
     }
 }

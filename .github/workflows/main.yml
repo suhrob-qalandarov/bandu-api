@@ -62,14 +62,14 @@ jobs:
 
             # .env faylini yaratish (HECH QANDAN INDENT YO'Q!)
             cat > .env << 'EOL'
-            DATASOURCE_URI=${{ secrets.DATASOURCE_URI }}
-            DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
-            DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
-            JPA_DDL=${{ secrets.JPA_DDL }}
-            JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}
-            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-            JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
-            EOL
+              DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}
+              DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
+              DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
+              JPA_DDL=${{ secrets.JPA_DDL }}
+              JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}
+              JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+              JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
+              EOL
 
             # Tekshirish
             echo "=== .env content ==="

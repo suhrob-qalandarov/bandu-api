@@ -4,13 +4,9 @@ services:
     container_name: web_db
     restart: unless-stopped
     environment:
-      - SPRING_DATASOURCE_URL=${DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=${JPA_DDL}
-      - SPRING_JPA_SHOW_SQL=${JPA_SHOW_SQL}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - JWT_TOKEN_LIFETIME_DAY=${JWT_TOKEN_LIFETIME_DAY}
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+      POSTGRES_DB: bandu_app_db
     volumes:
       - bandu_pgdata:/var/lib/postgresql/data
     networks:

@@ -1,4 +1,4 @@
-name: Deploy Bandu App to Production
+name: Deploy Bandu App (HTTP Only)
 
 on:
   push:

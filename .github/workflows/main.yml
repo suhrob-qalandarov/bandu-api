@@ -61,15 +61,18 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/bandu_app
 
             echo "Creating .env file..."
-            cat > .env <<EOL
-            DATASOURCE_URL=${{ secrets.DATASOURCE_URI }}
+            cat > .env << 'EOL'
+              DATASOURCE_URL=${{ secrets.DATASOURCE_URI }}
               DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
               DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
               JPA_DDL=${{ secrets.JPA_DDL }}
               JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}
               JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
               JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
-              EOF
+              EOL
+
+              echo ".env file created:"
+              cat .env
   
               sudo docker compose build
               sudo docker compose up -d

@@ -1,7 +1,7 @@
 services:
   bandu_db:
     image: postgres:15
-    container_name: bandu-app-db
+    container_name: web_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: bandu_app_db
@@ -19,7 +19,7 @@ services:
 
   bandu_app:
     build: .
-    container_name: bandu-app-web
+    container_name: web_app
     restart: unless-stopped
     ports:
       - "8080:8080"

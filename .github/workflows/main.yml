@@ -1,4 +1,4 @@
-name: Deploy Bandu App (HTTP Only)
+name: Deploy Bandu App to Production
 
 on:
   push:
@@ -7,8 +7,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 21
@@ -20,26 +21,48 @@ jobs:
       - name: Build JAR
         run: ./mvnw clean package -DskipTests -Pprod
 
-      - name: Verify files
+      - name: Verify build files
         run: |
+          echo "Checking build artifacts..."
           ls -l target/ || echo "target/ directory not found"
-          ls -l docker-compose.yml || echo "docker-compose.yml not found"
-          ls -l Dockerfile || echo "Dockerfile not found"
+          test -f target/bandu-app.jar || (echo "JAR file missing!" && exit 1)
+          test -f docker-compose.yml || (echo "docker-compose.yml missing!" && exit 1)
+          test -f Dockerfile || (echo "Dockerfile missing!" && exit 1)
 
-      - name: Create target directory on server
-        uses: appleboy/scp-action@v0.1.4
+      # 🧠 Server tayyorlash: Docker, papka, eski containerlarni tozalash
+      - name: Prepare server
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
+            echo "=== Installing Docker and Compose if not present ==="
+            if ! command -v docker &> /dev/null
+            then
+              sudo apt-get update
+              sudo apt-get install -y ca-certificates curl gnupg lsb-release
+              sudo mkdir -p /etc/apt/keyrings
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+              echo \
+                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+                https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+              sudo apt-get update
+              sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            fi
+
+            echo "=== Preparing deployment directory ==="
             mkdir -p /home/${{ secrets.SERVER_USER }}/bandu_app
             cd /home/${{ secrets.SERVER_USER }}/bandu_app
-            sudo docker-compose down || echo "docker-compose down failed"
-            sudo docker system prune -f --volumes || echo "Docker prune failed"
 
-      - name: Copy files to server
+            echo "=== Cleaning old containers and images ==="
+            sudo docker compose down || true
+            sudo docker system prune -f --volumes || true
+
+      # 📦 Yangi fayllarni yuborish
+      - name: Copy deployment files to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -48,13 +71,10 @@ jobs:
           source: "target/bandu-app.jar,docker-compose.yml,Dockerfile"
           target: /home/${{ secrets.SERVER_USER }}/bandu_app
           port: 22
-          timeout: 30s
-          command_timeout: 10m
-          debug: true
-          strip_components: 0
           overwrite: true
 
-      - name: Deploy
+      # 🚀 Deploy bosqichi
+      - name: Deploy new version
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -63,22 +83,32 @@ jobs:
           port: 22
           script: |
             cd /home/${{ secrets.SERVER_USER }}/bandu_app
-            ls -l
-            echo DATASOURCE_URL=${{ secrets.DATASOURCE_URI }}
-            echo DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
-            echo DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
-            echo JPA_DDL=${{ secrets.JPA_DDL }}
-            echo JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}
-            echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-            echo JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
+
+            echo "=== Generating .env file ==="
+            cat <<EOF > .env
+            DATASOURCE_URL=${{ secrets.DATASOURCE_URI }}
+              DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}
+              DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}
+              JPA_DDL=${{ secrets.JPA_DDL }}
+              JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}
+              JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+              JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}
+              EOF
             
-            cat .env
-            sudo apt-get update && sudo apt-get install -y dos2unix
-            dos2unix .env
-            sudo docker-compose config
-            sudo docker-compose build
-            sudo docker-compose up -d
-            sleep 10
-            sudo docker ps -a
-            sudo docker logs $(sudo docker ps -q --filter "name=web_app") || echo "No web_app container logs"
-            sudo docker logs $(sudo docker ps -q --filter "name=web_db") || echo "No web_db container logs"
+              sudo apt-get update && sudo apt-get install -y dos2unix
+              dos2unix .env
+            
+              echo "=== Building Docker images ==="
+              sudo docker compose build
+            
+              echo "=== Starting containers ==="
+              sudo docker compose up -d
+            
+              echo "=== Containers status ==="
+              sudo docker ps -a
+            
+              echo "=== Logs from web_app ==="
+              sudo docker logs $(sudo docker ps -q --filter "name=web_app") || echo "No web_app logs"
+            
+              echo "=== Logs from web_db ==="
+              sudo docker logs $(sudo docker ps -q --filter "name=web_db") || echo "No web_db logs"

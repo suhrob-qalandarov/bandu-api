@@ -22,7 +22,7 @@ public class AdminRoadMapController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RoadMapRes>> getRoadMaps() {
-        List<RoadMapRes> roadMaps = roadMapService.getAdminRoadMaps();
+        List<RoadMapRes> roadMaps = roadMapService.getAdminRoadMapResList();
         return ResponseEntity.ok(roadMaps);
     }
 
@@ -35,7 +35,7 @@ public class AdminRoadMapController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RoadMapRes> getRoadMap(@RequestBody RoadMapReq roadMapReq) {
+    public ResponseEntity<RoadMapRes> createNewRoadMap(@RequestBody RoadMapReq roadMapReq) {
         RoadMapRes roadMapRes = roadMapService.createAndReturnRes(roadMapReq);
         return ResponseEntity.ok(roadMapRes);
     }

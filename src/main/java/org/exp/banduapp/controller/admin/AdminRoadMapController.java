@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.exp.banduapp.models.dto.request.admin.RoadMapReq;
 import org.exp.banduapp.models.dto.response.RoadMapRes;
 import org.exp.banduapp.service.face.RoadMapService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,6 @@ public class AdminRoadMapController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoadMapRes> createNewRoadMap(@RequestBody RoadMapReq roadMapReq) {
         RoadMapRes roadMapRes = roadMapService.createAndReturnRes(roadMapReq);
-        return ResponseEntity.ok(roadMapRes);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roadMapRes);
     }
 }

@@ -1,11 +1,10 @@
 package org.exp.banduapp.config.mockinit;
 
 import lombok.RequiredArgsConstructor;
-import org.exp.banduapp.models.entities.Place;
-import org.exp.banduapp.models.entities.Role;
-import org.exp.banduapp.models.entities.User;
+import org.exp.banduapp.models.entities.*;
 import org.exp.banduapp.models.enums.PlaceStatus;
 import org.exp.banduapp.repository.PlaceRepository;
+import org.exp.banduapp.repository.RoadMapRepository;
 import org.exp.banduapp.repository.RoleRepository;
 import org.exp.banduapp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +26,7 @@ public class MockDataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final PlaceRepository placeRepository;
+    private final RoadMapRepository roadMapRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -55,7 +55,92 @@ public class MockDataInitializer implements CommandLineRunner {
         if (placeRepository.count() == 0) {
             placeMockDataSaver();
         }
+
+        if (roadMapRepository.count() == 0) {
+            roadMapMockDataSaver();
+        }
     }
+
+    private void roadMapMockDataSaver() {
+        RoadMap mvp = RoadMap.builder()
+                .title("MVP (0–2 oy)")
+                .description("Minimal ishlaydigan mahsulot")
+                .result("Ishlaydigan minimal versiya (MVP)")
+                .visibility(true)
+                .build();
+
+        mvp.setTasks(List.of(
+                RoadMapTask.builder().task("Mobil ilova va admin panelni ishlab chiqish").completed(true).roadMap(mvp).build(),
+                RoadMapTask.builder().task("Geo-lokatsiya va navbat logikasi").completed(false).roadMap(mvp).build(),
+                RoadMapTask.builder().task("To‘lov tizimi sinov integratsiyasi (Click / Payme)").completed(false).roadMap(mvp).build(),
+                RoadMapTask.builder().task("Telegram mini app test versiyasi").completed(false).roadMap(mvp).build(),
+                RoadMapTask.builder().task("UI/UX dizayn va brend tayyorlash").completed(true).roadMap(mvp).build()
+        ));
+
+        RoadMap testFeedback = RoadMap.builder()
+                .title("Test va Feedback (3–5 oy)")
+                .description("Pilot sinov va foydalanuvchi tajribasini tahlil qilish bosqichi")
+                .result("Barqaror MVP va dastlabki foydalanuvchi bazasi (1 000+)")
+                .visibility(true)
+                .build();
+
+        testFeedback.setTasks(List.of(
+                RoadMapTask.builder().task("10–15 joyda pilot test (barber, klinika, kafe)").roadMap(testFeedback).build(),
+                RoadMapTask.builder().task("Foydalanuvchi tajribasi tahlili va optimizatsiya").roadMap(testFeedback).build(),
+                RoadMapTask.builder().task("Barqarorlik, tezlik va xavfsizlikni yaxshilash").roadMap(testFeedback).build()
+        ));
+
+        RoadMap launch = RoadMap.builder()
+                .title("Bozorga chiqish (6–9 oy)")
+                .description("Mahsulotni real bozorda ishga tushirish bosqichi")
+                .result("5 000+ foydalanuvchi, 100+ joy tizimda")
+                .build();
+
+        launch.setTasks(List.of(
+                RoadMapTask.builder().task("Promo web-sayt ishga tushirish").roadMap(launch).build(),
+                RoadMapTask.builder().task("Brending va reklama (Instagram, Telegram, TikTok)").roadMap(launch).build(),
+                RoadMapTask.builder().task("1–2 shaharda soft launch").roadMap(launch).build()
+        ));
+
+        RoadMap monetization = RoadMap.builder()
+                .title("Monetizatsiya (10–15 oy)")
+                .description("Daromad olish mexanizmlarini joriy etish bosqichi")
+                .result("Oylik 3 000$+ daromad, 300+ joy faol")
+                .build();
+
+        monetization.setTasks(List.of(
+                RoadMapTask.builder().task("Joylar uchun obuna tizimi (10–200$/oy)").roadMap(monetization).build(),
+                RoadMapTask.builder().task("1% komissiya modeli").roadMap(monetization).build(),
+                RoadMapTask.builder().task("Statistik panel va reklama joylari").roadMap(monetization).build()
+        ));
+
+        RoadMap invest = RoadMap.builder()
+                .title("Investitsiya va Hamkorlik (16–20 oy)")
+                .description("Loyihani kengaytirish uchun moliyaviy va strategik sheriklar topish bosqichi")
+                .result("50 000$+ investitsiya, 2 strategik hamkor")
+                .build();
+
+        invest.setTasks(List.of(
+                RoadMapTask.builder().task("Pitch deck va moliyaviy prognozlar tayyorlash").roadMap(invest).build(),
+                RoadMapTask.builder().task("IT Park va investorlar bilan uchrashuvlar").roadMap(invest).build(),
+                RoadMapTask.builder().task("Yirik tarmoqlar bilan hamkorlik").roadMap(invest).build()
+        ));
+
+        RoadMap expand = RoadMap.builder()
+                .title("Kengayish (21–24 oy)")
+                .description("AI asosida tavsiya tizimi va xalqaro miqyosda kengayish bosqichi")
+                .result("100 000+ foydalanuvchi, 500+ joy faol, oylik 10 000$+ daromad")
+                .build();
+
+        expand.setTasks(List.of(
+                RoadMapTask.builder().task("Tavsiya tizimi (AI asosida)").roadMap(expand).build(),
+                RoadMapTask.builder().task("Qo‘shni davlatlarga chiqish (Qozog‘iston, Qirg‘iziston)").roadMap(expand).build(),
+                RoadMapTask.builder().task("Bandu Business panel (analitika uchun)").roadMap(expand).build()
+        ));
+
+        roadMapRepository.saveAll(List.of(mvp, testFeedback, launch, monetization, invest, expand));
+    }
+
 
     private void placeMockDataSaver() {
         placeRepository.saveAll(List.of(

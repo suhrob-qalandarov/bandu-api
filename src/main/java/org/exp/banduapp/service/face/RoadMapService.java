@@ -11,7 +11,7 @@ public interface RoadMapService {
 
     List<RoadMapRes> getRoadMaps();
 
-    List<RoadMapRes> getAdminRoadMaps();
+    List<RoadMapRes> getAdminRoadMapResList();
 
     RoadMapRes getAdminRoadMapRes(Long roadmapId);
 

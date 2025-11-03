@@ -24,27 +24,27 @@ public class AdminRoadMapController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RoadMapRes>> getRoadMaps() {
         List<RoadMapRes> roadMaps = roadMapService.getAdminRoadMapResList();
-        return ResponseEntity.ok(roadMaps);
+        return new ResponseEntity<>(roadMaps, HttpStatus.OK);
     }
 
     @GetMapping("/{roadmapId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoadMapRes> getRoadMapById(@PathVariable Long roadmapId) {
         RoadMapRes roadMapRes = roadMapService.getAdminRoadMapRes(roadmapId);
-        return ResponseEntity.ok(roadMapRes);
+        return new ResponseEntity<>(roadMapRes, HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoadMapRes> createNewRoadMap(@RequestBody RoadMapReq roadMapReq) {
         RoadMapRes roadMapRes = roadMapService.createAndReturnRes(roadMapReq);
-        return ResponseEntity.status(HttpStatus.CREATED).body(roadMapRes);
+        return new ResponseEntity<>(roadMapRes, HttpStatus.CREATED);
     }
 
     @PutMapping("/{roadmapId}/toggle")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> toggleRoadMapVisibility(@PathVariable Long roadmapId) {
         roadMapService.toggleRoadMap(roadmapId);
-        return ResponseEntity.accepted().build();
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

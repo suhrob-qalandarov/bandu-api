@@ -51,6 +51,14 @@ public class RoadMapServiceImpl implements RoadMapService {
         return convertToRoadMapRes(savedRoadMap);
     }
 
+    @Override
+    public void toggleRoadMap(Long roadmapId) {
+        RoadMap roadMap = roadMapRepository.findById(roadmapId)
+                .orElseThrow(() -> new EntityNotFoundException("Roadmap not found with id: " + roadmapId));
+        roadMap.setVisibility(!roadMap.getVisibility());
+        roadMapRepository.save(roadMap);
+    }
+
     private RoadMapRes convertToRoadMapRes(RoadMap roadMap){
         List<RoadMapTaskRes> taskResList = new ArrayList<>();
 

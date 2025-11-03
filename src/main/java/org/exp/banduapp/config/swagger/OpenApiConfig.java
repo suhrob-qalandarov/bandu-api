@@ -28,9 +28,9 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         final String SCHEME_NAME = "Authorization";
 
-        Server server = new Server();
-        server.setUrl(serverUrl);
-        server.setDescription("API Server");
+        Server server = new Server()
+                .url(serverUrl)
+                .description("API server");
 
         return new OpenAPI()
                 .addServersItem(server)

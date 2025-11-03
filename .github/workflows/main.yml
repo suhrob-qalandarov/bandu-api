@@ -62,6 +62,7 @@ jobs:
 
             # .env yaratish – 100% TO'G'RI, HECH QANDAY XATO YO'Q!
             printf '%s\n' \
+              'SWAGGER_SERVER_URL=${{ secrets.SWAGGER_SERVER_URL }}' \
               'DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}' \
               'DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}' \
               'DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}' \

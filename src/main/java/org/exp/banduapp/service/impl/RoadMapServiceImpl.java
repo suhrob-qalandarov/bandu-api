@@ -31,7 +31,7 @@ public class RoadMapServiceImpl implements RoadMapService {
     }
 
     @Override
-    public List<RoadMapRes> getAdminRoadMaps() {
+    public List<RoadMapRes> getAdminRoadMapResList() {
         return roadMapRepository.findAll().stream()
                 .map(this::convertToRoadMapRes)
                 .toList();

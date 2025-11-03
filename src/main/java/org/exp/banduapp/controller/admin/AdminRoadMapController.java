@@ -40,4 +40,11 @@ public class AdminRoadMapController {
         RoadMapRes roadMapRes = roadMapService.createAndReturnRes(roadMapReq);
         return ResponseEntity.status(HttpStatus.CREATED).body(roadMapRes);
     }
+
+    @PutMapping("/{roadmapId}/toggle")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> toggleRoadMapVisibility(@PathVariable Long roadmapId) {
+        roadMapService.toggleRoadMap(roadmapId);
+        return ResponseEntity.accepted().build();
+    }
 }

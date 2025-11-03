@@ -46,7 +46,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "target/bandu-app.jar,docker-compose.yml,Dockerfile"
+          source: "target/bandu-app.jar,docker-compose.yml,Dockerfile,nginx.conf"
           target: /home/${{ secrets.SERVER_USER }}/bandu_app
           overwrite: true
 

@@ -16,4 +16,6 @@ public interface RoadMapService {
     RoadMapRes getAdminRoadMapRes(Long roadmapId);
 
     RoadMapRes createAndReturnRes(RoadMapReq roadMapReq);
+
+    void toggleRoadMap(Long roadmapId);
 }

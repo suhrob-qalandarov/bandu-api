@@ -38,7 +38,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/ssl/bandu:/etc/ssl/bandu:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # Let's Encrypt
     depends_on:
       - bandu_app
     networks:

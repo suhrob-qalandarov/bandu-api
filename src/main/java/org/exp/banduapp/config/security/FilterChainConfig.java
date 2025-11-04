@@ -102,7 +102,7 @@ public class FilterChainConfig {
                 "http://localhost:3000",
                 "https://51.20.43.58", "http://51.20.43.58"
         ));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "Origin", "Accept"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         config.setAllowCredentials(true);
 

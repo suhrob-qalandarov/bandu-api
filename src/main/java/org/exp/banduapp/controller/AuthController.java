@@ -48,18 +48,18 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = LoginRes.class))),
             @ApiResponse(responseCode = "400", description = "Noto'g'ri telefon yoki parol")
     })
-    @PostMapping("/login")
+    @PostMapping("/login/{phoneNumber}/{password}")
     public ResponseEntity<LoginRes> loginUser(
             @NotBlank(message = "Telefon raqami bo'sh bo'lmasligi kerak")
             @Pattern(
                     regexp = "^(\\+998|998)[0-9]{9}$",
                     message = "Telefon raqami +998 yoki 998 bilan boshlanib, 12 ta raqamdan iborat bo'lishi kerak"
             )
-            @RequestParam("phoneNumber") String phoneNumber,
+            @PathVariable("phoneNumber") String phoneNumber,
 
             @NotBlank(message = "Parol bo'sh bo'lmasligi kerak")
             @Size(min = 6, max = 50, message = "Parol kamida 6 belgi bo'lishi kerak")
-            @RequestParam("password") String password
+            @PathVariable("password") String password
     ) {
         LoginRes loginRes = authService.loginClient(phoneNumber, password);
         return ResponseEntity.ok(loginRes);
@@ -75,19 +75,19 @@ public class AuthController {
 
     @Operation(summary = "SMS kod bilan tasdiqlash", description = "OTP orqali hisobni faollashtirish")
     @ApiResponse(responseCode = "200", description = "Hisob faollashtirildi + JWT token")
-    @PostMapping("/verify")
+    @PostMapping("/verify/{phoneNumber}/{otpCode}")
     public ResponseEntity<LoginRes> verifyClient(
             @NotBlank(message = "Telefon raqami bo'sh bo'lmasligi kerak")
             @Pattern(
                     regexp = "^(\\+998|998)[0-9]{9}$",
                     message = "Telefon raqami +998 yoki 998 bilan boshlanib, 12 ta raqamdan iborat bo'lishi kerak"
             )
-            @RequestParam("phoneNumber") String phoneNumber,
+            @PathVariable("phoneNumber") String phoneNumber,
 
             @NotBlank(message = "Tasdiqlash kodi bo'sh bo'lmasligi kerak")
             @Size(min = 6, max = 6, message = "Tasdiqlash kodi 6 ta raqamdan iborat bo'lishi kerak")
             @Pattern(regexp = "\\d{6}", message = "Tasdiqlash kodi faqat raqamlardan iborat bo'lishi kerak")
-            @RequestParam("otpCode") String otpCode
+            @PathVariable("otpCode") String otpCode
     ) {
         LoginRes loginRes = authService.verifyClient(phoneNumber, otpCode);
         return ResponseEntity.ok(loginRes);

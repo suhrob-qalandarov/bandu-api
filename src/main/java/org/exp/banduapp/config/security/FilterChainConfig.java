@@ -36,6 +36,8 @@ public class FilterChainConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.authorizeHttpRequests(auth ->
                 auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // Public swagger endpoints
                         .requestMatchers(
                                 "/swagger-ui.html",
@@ -56,8 +58,6 @@ public class FilterChainConfig {
                                 API + V1 + AUTH + VERIFY + WAY_ALL,
                                 API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
-
-                        .requestMatchers(HttpMethod.OPTIONS, WAY_ALL).permitAll()
 
                         // Public places endpoints
                         .requestMatchers(
@@ -97,11 +97,12 @@ public class FilterChainConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
+                "https://bandu.uz",
                 "https://api.bandu.uz", "http://api.bandu.uz",
                 "http://localhost:3000",
                 "https://51.20.43.58", "http://51.20.43.58"
         ));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "Origin", "Accept"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         config.setAllowCredentials(true);
 

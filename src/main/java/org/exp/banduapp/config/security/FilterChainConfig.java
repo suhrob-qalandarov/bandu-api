@@ -34,7 +34,7 @@ public class FilterChainConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http, JwtFilter mySecurityFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth ->
                 auth
                         // Public swagger endpoints

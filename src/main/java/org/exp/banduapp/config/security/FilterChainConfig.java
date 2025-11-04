@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.exp.banduapp.util.Constants.*;
 
@@ -57,11 +58,7 @@ public class FilterChainConfig {
                                 API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.OPTIONS,
-                                API + V1 + AUTH + WAY_ALL,
-                                API + V1 + WAY_ALL
-                        ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, WAY_ALL).permitAll()
 
                         // Public places endpoints
                         .requestMatchers(
@@ -100,10 +97,7 @@ public class FilterChainConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(
-                "https://51.20.43.58",
-                "http://localhost:3000", "http://localhost:3001"
-        ));
+        config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         config.setAllowCredentials(true);

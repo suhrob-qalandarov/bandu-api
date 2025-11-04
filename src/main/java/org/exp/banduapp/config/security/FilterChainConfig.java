@@ -57,6 +57,12 @@ public class FilterChainConfig {
                                 API + V1 + AUTH + LOGIN + WAY_ALL
                         ).permitAll()
 
+                        .requestMatchers(
+                                HttpMethod.OPTIONS,
+                                API + V1 + AUTH + WAY_ALL,
+                                API + V1 + WAY_ALL
+                        ).permitAll()
+
                         // Public places endpoints
                         .requestMatchers(
                                 HttpMethod.GET,

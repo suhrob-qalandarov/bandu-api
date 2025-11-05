@@ -118,9 +118,8 @@ public class FilterChainConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(customUserDetailsService);
         return authProvider;
     }
 

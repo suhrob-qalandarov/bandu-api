@@ -97,7 +97,7 @@ public class FilterChainConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
-                "https://bandu.uz",
+                "https://bandu.uz", "https://www.bandu.uz",
                 "https://api.bandu.uz"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "Origin", "Accept"));

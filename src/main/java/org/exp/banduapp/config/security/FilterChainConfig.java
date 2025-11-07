@@ -98,9 +98,7 @@ public class FilterChainConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
                 "https://bandu.uz",
-                "https://api.bandu.uz", "http://api.bandu.uz",
-                "http://localhost:3000",
-                "https://51.20.43.58", "http://51.20.43.58"
+                "https://api.bandu.uz"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "Origin", "Accept"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
@@ -118,9 +116,8 @@ public class FilterChainConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(customUserDetailsService);
         return authProvider;
     }
 

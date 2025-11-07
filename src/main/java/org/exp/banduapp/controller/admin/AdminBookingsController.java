@@ -1,3 +1,4 @@
+/*
 package org.exp.banduapp.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,3 +54,4 @@ public class AdminBookingsController {
         return ResponseEntity.ok(adminBookingService.confirmBooking(bookingId));
     }
 }
+*/

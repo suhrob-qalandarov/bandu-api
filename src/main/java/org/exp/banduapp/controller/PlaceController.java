@@ -1,3 +1,4 @@
+/*
 package org.exp.banduapp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,3 +48,4 @@ public class PlaceController {
         return ResponseEntity.ok(placeService.getPlaceById(placeId));
     }
 }
+*/

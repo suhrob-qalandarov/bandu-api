@@ -1,3 +1,4 @@
+/*
 package org.exp.banduapp.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,4 +72,4 @@ public class AdminPlaceController {
         adminPlaceService.hidePlaceWithVisibility(placeId);
         return ResponseEntity.noContent().build();
     }
-}
+}*/

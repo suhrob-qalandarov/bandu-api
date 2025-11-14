@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:8080:8080"  # Faqat localhost dan, nginx orqali
+      - "0.0.0.0:8080:8080"  # Tashqaridan ham ochiq
     depends_on:
       zayrx_control_db:
         condition: service_healthy

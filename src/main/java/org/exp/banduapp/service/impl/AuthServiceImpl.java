@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
 
         return LoginRes.builder()
                 .token(token)
-                .userRes(userRes)
+                .user(userRes)
                 .build();
     }
 
@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
 
         return LoginRes.builder()
                 .token(token)
-                .userRes(userRes)
+                .user(userRes)
                 .build();
     }
 }

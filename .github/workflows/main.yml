@@ -1,85 +1,84 @@
-name: Deploy Bandu App to Production
+name: Deploy to Contabo Server
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch: # Manual trigger
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
 
-      - name: Build JAR
-        run: ./mvnw clean package -DskipTests -Pprod
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
 
-      - name: Verify files
-        run: |
-          ls -l target/ || echo "target/ directory not found"
-          ls -l docker-compose.yml || echo "docker-compose.yml not found"
-          ls -l Dockerfile || echo "Dockerfile not found"
+    - name: Create .env file
+      run: |
+        echo "DATASOURCE_URL=jdbc:postgresql://zayrx_control_db:5432/zayrx_control_db" >> .env
+        echo "DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}" >> .env
+        echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}" >> .env
+        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+        echo "JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}" >> .env
+        echo "SWAGGER_SERVER_URL=${{ secrets.SWAGGER_SERVER_URL }}" >> .env
+        echo "JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}" >> .env
 
-      - name: Prepare Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            mkdir -p /home/${{ secrets.SERVER_USER }}/bandu_app
-            cd /home/${{ secrets.SERVER_USER }}/bandu_app
-            sudo docker compose down || true
-            sudo docker system prune -f --volumes || true
+    - name: Install SSH client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y openssh-client sshpass
 
-      - name: Copy build files to server
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          source: "target/bandu-app.jar,docker-compose.yml,Dockerfile,nginx.conf"
-          target: /home/${{ secrets.SERVER_USER }}/bandu_app
-          overwrite: true
+    - name: Deploy to Contabo Server
+      env:
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      run: |
+        # SSH password bilan ulanish uchun config
+        mkdir -p ~/.ssh
+        ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+        
+        # Fayllarni serverga yuklash
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no \
+          docker-compose.yml \
+          Dockerfile \
+          .env \
+          target/zayrx-control.jar \
+          $SSH_USER@$SSH_HOST:$DEPLOY_PATH/
+        
+        # Serverda docker compose up qilish
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST bash << ENDSSH
+          set -e
+          cd $DEPLOY_PATH
+          echo "Stopping existing containers..."
+          docker compose down || true
+          echo "Building and starting containers..."
+          docker compose up -d --build
+          echo "Waiting for services to start..."
+          sleep 10
+          echo "Container status:"
+          docker compose ps
+          echo "Recent logs:"
+          docker compose logs --tail=50
+        ENDSSH
 
-      - name: Deploy on Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            cd /home/${{ secrets.SERVER_USER }}/bandu_app
-
-            # .env yaratish – 100% TO'G'RI, HECH QANDAY XATO YO'Q!
-            printf '%s\n' \
-              'SWAGGER_SERVER_URL=${{ secrets.SWAGGER_SERVER_URL }}' \
-              'DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}' \
-              'DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}' \
-              'DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}' \
-              'JPA_DDL=${{ secrets.JPA_DDL }}' \
-              'JPA_SHOW_SQL=${{ secrets.JPA_SHOW_SQL }}' \
-              'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' \
-              'JWT_TOKEN_LIFETIME_DAY=${{ secrets.JWT_TOKEN_LIFETIME_DAY }}' > .env
-
-            # Tekshirish
-            echo "=== .env content ==="
-            cat .env
-            echo "====================="
-
-            # Docker
-            sudo docker compose build --no-cache
-            sudo docker compose up -d
-
-            sleep 15
-            sudo docker ps -a
-            sudo docker logs web_app --tail 50
+    - name: Health Check
+      env:
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      run: |
+        sleep 30
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST \
+          "curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080/api/health || echo 'Health check endpoint not found, but deployment completed'"

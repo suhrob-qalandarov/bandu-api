@@ -1,39 +1,39 @@
 services:
-  bandu_db:
+  zayrx_control_db:
     image: postgres:15
-    container_name: web_db
+    container_name: zayrx_control_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
-      POSTGRES_DB: bandu_app_db
+      POSTGRES_DB: zayrx_control_db
     volumes:
-      - bandu_pgdata:/var/lib/postgresql/data
+      - zayrx_control_pgdata:/var/lib/postgresql/data
     networks:
-      - bandu-network
+      - zayrx-control-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATASOURCE_USERNAME} -d bandu_app_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${DATASOURCE_USERNAME} -d zayrx_control_db"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  bandu_app:
+  zayrx_control_app:
     build: .
-    container_name: web_app
+    container_name: zayrx_control_app
     restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "8080:8080"  # Tashqaridan ochiq
+      - "127.0.0.1:8080:8080"  # Faqat localhost dan, nginx orqali
     depends_on:
-      bandu_db:
+      zayrx_control_db:
         condition: service_healthy
     networks:
-      - bandu-network
+      - zayrx-control-network
 
 networks:
-  bandu-network:
+  zayrx-control-network:
     driver: bridge
 
 volumes:
-  bandu_pgdata:
+  zayrx_control_pgdata:

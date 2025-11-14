@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
 # JAR file
-COPY target/bandu-app.jar app.jar
+COPY target/zayrx-control.jar app.jar
 
 # Spring Boot app port
 EXPOSE 8080

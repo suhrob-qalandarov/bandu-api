@@ -5,5 +5,5 @@ import lombok.Builder;
 @Builder
 public record LoginRes (
         String token,
-        UserRes userRes
+        UserRes user
 ) {}

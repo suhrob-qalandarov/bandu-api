@@ -25,7 +25,7 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo "DATASOURCE_URL=jdbc:postgresql://zayrx_control_db:5432/zayrx_control_db" >> .env
+        echo "DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}" >> .env
         echo "DATASOURCE_USERNAME=${{ secrets.DATASOURCE_USERNAME }}" >> .env
         echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}" >> .env
         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
@@ -40,25 +40,29 @@ jobs:
 
     - name: Deploy to Contabo Server
       env:
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        DEPLOY_PATH: /opt/zayrx-control
       run: |
         # SSH password bilan ulanish uchun config
         mkdir -p ~/.ssh
-        ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+        
+        # Serverda deploy path ni yaratish
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
+          "mkdir -p $DEPLOY_PATH"
         
         # Fayllarni serverga yuklash
-        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no \
+        sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no \
           docker-compose.yml \
           Dockerfile \
           .env \
           target/zayrx-control.jar \
-          $SSH_USER@$SSH_HOST:$DEPLOY_PATH/
+          $SERVER_USER@$SERVER_IP:$DEPLOY_PATH/
         
         # Serverda docker compose up qilish
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST bash << ENDSSH
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP bash << ENDSSH
           set -e
           cd $DEPLOY_PATH
           echo "Stopping existing containers..."
@@ -75,10 +79,10 @@ jobs:
 
     - name: Health Check
       env:
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
       run: |
         sleep 30
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST \
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
           "curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080/api/health || echo 'Health check endpoint not found, but deployment completed'"

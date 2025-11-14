@@ -97,7 +97,11 @@ public class FilterChainConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
-                "https://bandu.uz", "https://www.bandu.uz"
+                "https://api.zayrx.uz",
+                "http://api.zayrx.uz",
+                "https://zayrx.uz",
+                "https://www.zayrx.uz",
+                "http://localhost:3000"
         ));
         config.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
@@ -106,6 +110,7 @@ public class FilterChainConfig {
                 "Authorization", "Content-Type", "X-Requested-With"
         ));
         config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

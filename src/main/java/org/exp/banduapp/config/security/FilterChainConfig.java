@@ -98,9 +98,10 @@ public class FilterChainConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList(
                 "https://api.zayrx.uz",
-                "http://api.zayrx.uz",
                 "https://zayrx.uz",
                 "https://www.zayrx.uz",
+                "https://bandu.uz",
+                "https://www.bandu.uz",
                 "http://localhost:3000"
         ));
         config.setAllowedMethods(Arrays.asList(

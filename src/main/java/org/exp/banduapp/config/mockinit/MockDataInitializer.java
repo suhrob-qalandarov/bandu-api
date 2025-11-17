@@ -32,7 +32,6 @@ public class MockDataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Set<Role> roles = new HashSet<>(List.of(
-                new Role(ROLE_SUPER_ADMIN),
                 new Role(ROLE_ADMIN),
                 new Role(ROLE_USER)
         ));
